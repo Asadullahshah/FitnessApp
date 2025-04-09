@@ -22,6 +22,7 @@ export const Colors = {
       soft_white: "#F2F2F2",
       light_gray_purple: "#B8B4C1",
       dark_gray: "#182025",
+      dark_navy: "#1A202D",
     },
     secondary_colors: {
       deep_black: "#181D25",

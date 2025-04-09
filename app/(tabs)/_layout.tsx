@@ -144,12 +144,6 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  tabContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "red",
-  },
   tabLabelCircle: {
     borderWidth: 2,
     borderRadius: 36,
