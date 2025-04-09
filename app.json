@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Fitness",
+    "slug": "Fitness",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "com.supabase",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "deeplinking": true,
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff",
+        "package": "com.gym.fitnessapp",
+        "versionCode": 1
+      },
+      "package": "com.gym.fitnessapp"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ec62f763-1a38-4ec5-a9f9-af3b57f129cb"
+      }
+    },
+    "owner": "abdulmuqeetmunshi"
+  }
+}
