@@ -14,6 +14,7 @@ import { TitleText } from "@/components/ui/TitleText";
 import BackIconSvg from "@/components/ui/BackIconSvg";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { ButtonRed } from "@/components/ui/ButtonRed";
+import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 
 const profile = () => {
   return (
@@ -22,7 +23,7 @@ const profile = () => {
         <View style={styles.header}>
           <BackIconSvg />
           <TitleText size={20}>My Profile</TitleText>
-          <BackIconSvg />
+          <SettingsIconSvg />
         </View>
         <View style={styles.streakBox}>
           <Text style={styles.streakText}>20🔥</Text>
