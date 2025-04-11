@@ -12,6 +12,8 @@ import { Colors } from "@/constants/Colors";
 import { pxToWidth, pxToHeight } from "../../utils";
 import { TitleText } from "@/components/ui/TitleText";
 import BackIconSvg from "@/components/ui/BackIconSvg";
+import { SubTitleText } from "@/components/ui/SubTitleText";
+import { ButtonRed } from "@/components/ui/ButtonRed";
 
 const profile = () => {
   return (
@@ -33,7 +35,17 @@ const profile = () => {
               source={require("@/assets/images/avatar.png")}
               style={styles.avatar}
             />
+            <View>
+              <SubTitleText color={Colors.light.primary_colors.soft_white}>
+                Joseph Crown (Jojo)
+              </SubTitleText>
+              <SubTitleText color="#9E9E9E">joecrown@gmail.com</SubTitleText>
+            </View>
+            <ButtonRed style={styles.button} heightB={30} widthB={83}>
+              Edit
+            </ButtonRed>
           </View>
+          <View style={styles.infoContainer}></View>
         </View>
       </View>
     </SafeAreaView>
@@ -80,6 +92,7 @@ const styles = StyleSheet.create({
   },
   accountDetails: {
     flexDirection: "row",
+    gap: pxToWidth(16),
   },
   streakText: {
     fontFamily: "marker",
@@ -94,6 +107,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: pxToWidth(24),
+  },
+  button: {
+    borderRadius: 999999,
+  },
+  infoContainer: {
+    flexDirection: "row",
   },
   text: {
     color: "white",

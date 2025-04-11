@@ -40,8 +40,8 @@ export const SubTitleText: React.FC<SubTitleTextProps> = ({
 
 const styles = StyleSheet.create({
   subTitle: {
-    textAlign: "center",
-    alignSelf: "center",
+    // textAlign: "center",
+    // alignSelf: "center",
     fontFamily: "regular",
   },
 });

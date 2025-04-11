@@ -47,16 +47,16 @@ export const ButtonRed: React.FC<ButtonRedProps> = ({
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={[
-        styles.button,
         {
           width: pxtowidth(widthB),
           paddingVertical: pxtoheight(padV),
           paddingHorizontal: pxtowidth(padH),
           marginTop: pxtoheight(marginT),
         },
+        styles.button,
       ]}
     >
-      <Text style={[styles.buttonText, { fontSize: pxtowidth(fontH) }]}>
+      <Text style={[{ fontSize: pxtowidth(fontH) }, styles.buttonText]}>
         {children}
       </Text>
     </LinearGradient>
