@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "bold",
     lineHeight: pxtoheight(36),
-    textAlign: "center",
-    alignSelf: "center",
+    // textAlign: "center",
+    // alignSelf: "center",
   },
 });

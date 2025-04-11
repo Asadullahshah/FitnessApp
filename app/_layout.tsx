@@ -26,6 +26,7 @@ export default function RootLayout() {
     light: require("../assets/fonts/Poppins-Light.ttf"),
     italic: require("../assets/fonts/Poppins-Italic.ttf"),
     protest: require("../assets/fonts/ProtestStrike-Regular.ttf"),
+    marker: require("@/assets/fonts/PermanentMarker-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -45,7 +46,10 @@ export default function RootLayout() {
           <Stack.Screen name="(Onboarding)" options={{ headerShown: false }} />
           <Stack.Screen name="(SignUp)" options={{ headerShown: false }} />
           <Stack.Screen name="(Login)" options={{ headerShown: false }} />
-          <Stack.Screen name="(EnterTheArena)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(EnterTheArena)"
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>

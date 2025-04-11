@@ -1,14 +1,16 @@
 import * as React from "react";
 import { SafeAreaView, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import { pxToWidth, pxToHeight } from "@/utils";
+
 const SvgComponent = (props: any) => (
   <View
     style={{
-      width: 32,
-      height: 32,
-      padding: 4,
+      width: pxToWidth(32),
+      height: pxToWidth(32),
+      padding: pxToWidth(4),
       alignItems: "center",
-      gap: 10,
+      // gap: pxToWidth(10),
       flexShrink: 0,
       borderRadius: 8,
       backgroundColor: "#122435",
@@ -16,11 +18,11 @@ const SvgComponent = (props: any) => (
   >
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      width={24}
-      height={24}
+      width={pxToWidth(24)}
+      height={pxToWidth(24)}
       fill="none"
       {...props}
-      viewBox="0 0 24 24"
+      viewBox={`0 0 ${pxToWidth(24)} ${pxToWidth(24)}`}
       style={{
         flexShrink: 0,
       }}
