@@ -19,16 +19,6 @@ import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 const profile = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.header}>
-          <BackIconSvg />
-          <TitleText size={20}>My Profile</TitleText>
-          <SettingsIconSvg />
-        </View>
-        <View style={styles.streakBox}>
-          <Text style={styles.streakText}>20🔥</Text>
-        </View>
-      </View>
       <View style={styles.contentContainer}>
         <View style={styles.accountContainer}>
           <View style={styles.accountDetails}>
@@ -61,31 +51,6 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
     backgroundColor: Colors.dark.background,
   },
-  headerContainer: {
-    height: pxToHeight(135),
-    width: pxToWidth(390),
-    backgroundColor: Colors.light.secondary_colors.dark_navy,
-    alignItems: "center",
-  },
-  header: {
-    height: pxToHeight(32),
-    width: pxToWidth(341),
-    marginTop: pxToHeight(16),
-    marginHorizontal: pxToWidth(25),
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  streakBox: {
-    backgroundColor: Colors.dark.background,
-    borderRadius: 8,
-    height: pxToHeight(33),
-    width: pxToWidth(74),
-    marginTop: pxToHeight(19),
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-  },
   accountContainer: {
     marginTop: pxToHeight(32),
     width: pxToWidth(243),
@@ -94,11 +59,6 @@ const styles = StyleSheet.create({
   accountDetails: {
     flexDirection: "row",
     gap: pxToWidth(16),
-  },
-  streakText: {
-    fontFamily: "marker",
-    fontSize: pxToHeight(20),
-    color: "white",
   },
   avatar: {
     width: pxToWidth(55),
