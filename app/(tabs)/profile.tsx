@@ -20,6 +20,9 @@ import { FavIconSvg } from "@/components/ui/FavIconSvg";
 import { PlansIconSvg } from "@/components/PlansIconSvg";
 import { TrackIconSvg } from "@/components/TrackIconSvg";
 import { AchievementIconSvg } from "@/components/AchievemtIconSvg";
+import { BubbleIcon } from "@/components/BubbleIcon";
+import { ManualIconSvg } from "@/components/ManualIconSvg";
+import { SignOutIconSvg } from "@/components/SignOutIconSvg";
 
 const options = [
   "Favourites",
@@ -33,6 +36,17 @@ const optionIcons = [
   PlansIconSvg,
   TrackIconSvg,
   AchievementIconSvg,
+];
+
+const otherIcons = [ManualIconSvg, SignOutIconSvg];
+
+const otherOptions = ["Workout Manual", "Sign Out"];
+
+const bubbles = [
+  require("@/assets/images/shoe.png"),
+  require("@/assets/images/foot.png"),
+  require("@/assets/images/target.png"),
+  require("@/assets/images/candle.png"),
 ];
 
 const profile = () => {
@@ -55,21 +69,39 @@ const profile = () => {
               Edit
             </ButtonRed>
           </View>
-          <View style={styles.infoContainer}>
-            <InfoBox title="185cm">Height</InfoBox>
-            <InfoBox title="24 Y/O">Age</InfoBox>
-            <InfoBox title="70KG">Weight</InfoBox>
-          </View>
-          <View style={styles.optionsContainer}>
-            {options.map((v, i) => (
-              <Options
-                name={v}
-                IconL={optionIcons[i]}
-                IconR={ArrowRight}
-                key={i}
-              />
-            ))}
-          </View>
+        </View>
+        <View style={styles.infoContainer}>
+          <InfoBox title="185cm">Height</InfoBox>
+          <InfoBox title="24 Y/O">Age</InfoBox>
+          <InfoBox title="70KG">Weight</InfoBox>
+        </View>
+        <View style={styles.optionsContainer}>
+          {options.map((v, i) => (
+            <Options
+              name={v}
+              IconL={optionIcons[i]}
+              IconR={ArrowRight}
+              key={i}
+            />
+          ))}
+        </View>
+        <View style={styles.achievementsContainer}>
+          {bubbles.map((v, i) => (
+            <BubbleIcon img={v} key={i} />
+          ))}
+        </View>
+        <SubTitleText
+          style={styles.text}
+          color={Colors.light.primary_colors.soft_white}
+          size={18}
+          mTop={20}
+        >
+          Others
+        </SubTitleText>
+        <View style={[styles.optionsContainer, styles.otherOptionsContainer]}>
+          {otherOptions.map((v, i) => (
+            <Options name={v} IconL={otherIcons[i]} key={i} />
+          ))}
         </View>
       </View>
     </SafeAreaView>
@@ -101,7 +133,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    alignItems: "center",
+    marginLeft: pxToWidth(24),
   },
   button: {
     borderRadius: 999999,
@@ -117,12 +149,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   text: {
-    color: "white",
-    fontSize: 20,
+    alignSelf: "flex-start",
   },
   optionsContainer: {
     marginTop: pxToHeight(32),
+    width: pxToWidth(342),
     flexDirection: "column",
     gap: pxToHeight(16),
+  },
+  otherOptionsContainer: {
+    marginTop: pxToHeight(24),
+  },
+  achievementsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: pxToWidth(342),
+    height: pxToHeight(71.071),
+    marginTop: pxToHeight(16),
+    gap: pxToWidth(8),
+    alignItems: "center",
+    // justifyContent: "center",
   },
 });

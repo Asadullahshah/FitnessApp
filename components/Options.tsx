@@ -10,7 +10,7 @@ export const Options = ({
   IconL,
 }: {
   name: string;
-  IconR: React.ElementType;
+  IconR?: React.ElementType;
   IconL: React.ElementType;
 }) => {
   return (
@@ -23,9 +23,11 @@ export const Options = ({
       >
         {name}
       </SubTitleText>
-      <View style={styles.iconRight}>
-        <IconR />
-      </View>
+      {IconR && (
+        <View style={styles.iconRight}>
+          <IconR />
+        </View>
+      )}
     </View>
   );
 };
