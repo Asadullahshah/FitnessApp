@@ -5,6 +5,12 @@ import { SubTitleText } from "@/components/ui/SubTitleText";
 import { TitleText } from "@/components/ui/TitleText";
 import { UploadIconSvg } from "@/components/UploadIconSvg";
 import TextBox from "@/components/TextBox";
+import { GenderIconSvg } from "@/components/GenderIconSvg";
+import { CalendarIconSvg } from "@/components/CalendarIconSvg";
+import { WeightIconSvg } from "@/components/WeightIconSvg";
+import { HeightIconSvg } from "@/components/HeightIconSvg";
+import { ToneIconSvg } from "@/components/ToneIconSvg";
+import { SelectIconSvg } from "@/components/SelectIconSvg";
 
 export default function profileEdit() {
   return (
@@ -25,11 +31,36 @@ export default function profileEdit() {
       >
         Joseph Crown (Jojo)
       </TitleText>
-      <SubTitleText size={14} color="#9E9E9E">
+      <SubTitleText
+        style={{ marginBottom: pxToHeight(8) }}
+        size={14}
+        color="#9E9E9E"
+      >
         joecrown@gmail.com
       </SubTitleText>
       <View style={styles.input}>
-        <TextBox leftIcon="account-outline" />
+        <TextBox placeholder={"Male"} customIcon={<GenderIconSvg />} />
+      </View>
+      <View style={styles.input}>
+        <TextBox placeholder={"24"} customIcon={<CalendarIconSvg />} />
+      </View>
+      <View style={styles.input}>
+        <TextBox placeholder={"70"} customIcon={<WeightIconSvg />} />
+      </View>
+      <View style={styles.input}>
+        <TextBox placeholder={"185"} customIcon={<HeightIconSvg />} />
+      </View>
+      <View style={styles.input}>
+        <TextBox
+          placeholder={"Choose Motivational Tone"}
+          customIcon={<ToneIconSvg />}
+        />
+      </View>
+      <View style={styles.input}>
+        <TextBox
+          placeholder={"Customize Interests"}
+          customIcon={<SelectIconSvg />}
+        />
       </View>
     </SafeAreaView>
   );
@@ -63,6 +94,6 @@ const styles = StyleSheet.create({
   input: {
     width: pxToWidth(342),
     height: pxToHeight(48),
-    marginTop: pxToHeight(24),
+    marginTop: pxToHeight(16),
   },
 });

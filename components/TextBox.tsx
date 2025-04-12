@@ -74,11 +74,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.light.secondary_colors.dark_navy,
     borderRadius: 12,
-    paddingHorizontal: pxToWidth(12),
-    paddingVertical: pxToHeight(14),
+    height: pxToHeight(48),
+    width: pxToWidth(342),
+    // paddingHorizontal: pxToWidth(12),
+    // paddingVertical: pxToHeight(14),
   },
   leftIcon: {
-    marginRight: pxToWidth(10),
+    marginRight: pxToWidth(14),
+    marginLeft: pxToWidth(16),
   },
   input: {
     flex: 1,
