@@ -5,7 +5,7 @@ import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 import { TitleText } from "@/components/ui/TitleText";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import BackIconSvg from "@/components/ui/BackIconSvg";
 import { pxToWidth, pxToHeight } from "../../utils";
@@ -161,7 +161,11 @@ export default function TabLayout() {
                   justifyContent: "space-between",
                 }}
               >
-                <Pressable onPress={() => console.log("Back pressed")}>
+                <Pressable
+                  onPress={() => {
+                    router.back();
+                  }}
+                >
                   <BackIconSvg />
                 </Pressable>
                 <TitleText size={20}>My Profile</TitleText>
