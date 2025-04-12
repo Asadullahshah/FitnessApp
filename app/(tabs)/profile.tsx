@@ -13,6 +13,27 @@ import { pxToWidth, pxToHeight } from "../../utils";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { ButtonRed } from "@/components/ui/ButtonRed";
 import { InfoBox } from "@/components/InfoBox";
+import { Options } from "@/components/Options";
+import { HeartIconSvg } from "@/components/HeartIconSvg";
+import { ArrowRight } from "@/components/ArrowRight";
+import { FavIconSvg } from "@/components/ui/FavIconSvg";
+import { PlansIconSvg } from "@/components/PlansIconSvg";
+import { TrackIconSvg } from "@/components/TrackIconSvg";
+import { AchievementIconSvg } from "@/components/AchievemtIconSvg";
+
+const options = [
+  "Favourites",
+  "Premium & Plans",
+  "Track my Progress",
+  "Achievement",
+];
+
+const optionIcons = [
+  HeartIconSvg,
+  PlansIconSvg,
+  TrackIconSvg,
+  AchievementIconSvg,
+];
 
 const profile = () => {
   return (
@@ -38,6 +59,16 @@ const profile = () => {
             <InfoBox title="185cm">Height</InfoBox>
             <InfoBox title="24 Y/O">Age</InfoBox>
             <InfoBox title="70KG">Weight</InfoBox>
+          </View>
+          <View style={styles.optionsContainer}>
+            {options.map((v, i) => (
+              <Options
+                name={v}
+                IconL={optionIcons[i]}
+                IconR={ArrowRight}
+                key={i}
+              />
+            ))}
           </View>
         </View>
       </View>
@@ -88,5 +119,10 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 20,
+  },
+  optionsContainer: {
+    marginTop: pxToHeight(32),
+    flexDirection: "column",
+    gap: pxToHeight(16),
   },
 });

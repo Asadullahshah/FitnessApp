@@ -12,10 +12,18 @@ export const InfoBox = ({
 }) => {
   return (
     <View>
-      <SubTitleText size={14} color={Colors.light.primary_colors.mint_green}>
+      <SubTitleText
+        style={{ textAlign: "center" }}
+        size={14}
+        color={Colors.light.primary_colors.mint_green}
+      >
         {title}
       </SubTitleText>
-      <SubTitleText size={12} color={Colors.light.inputText}>
+      <SubTitleText
+        style={{ textAlign: "center" }}
+        size={12}
+        color={Colors.light.inputText}
+      >
         {children}
       </SubTitleText>
     </View>
