@@ -10,11 +10,11 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import BackIconSvg from "@/components/ui/BackIconSvg";
 import { pxToWidth, pxToHeight } from "../../utils";
 import { useNavigationState } from "@react-navigation/native";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function TabLayout() {
   const state = useNavigationState((state) => state);
-
+  const [streak, setStreak] = useState(20);
   // Safely get the full route
   const fullRoute = state.routes[state.index]?.state?.routes || [];
   const currentRoute =
@@ -219,7 +219,7 @@ export default function TabLayout() {
                     color: "white",
                   }}
                 >
-                  20🔥
+                  {streak}🔥
                 </Text>
               </View>
             </View>
