@@ -9,8 +9,23 @@ import { router, Tabs } from "expo-router";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import BackIconSvg from "@/components/ui/BackIconSvg";
 import { pxToWidth, pxToHeight } from "../../utils";
+import { useNavigationState } from "@react-navigation/native";
+import { useEffect, useRef } from "react";
 
 export default function TabLayout() {
+  const state = useNavigationState((state) => state);
+  const fullRoute = state.routes[state.index]?.state?.routes || [];
+  const currentRoute = fullRoute[fullRoute.length - 1];
+  const routeRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (currentRoute.state && typeof currentRoute.state.index === "number") {
+      routeRef.current =
+        currentRoute.state.routeNames?.[currentRoute.state.index] ?? null;
+    } else {
+      routeRef.current = null;
+    }
+  }, [currentRoute]);
   return (
     <Tabs
       screenOptions={{
@@ -169,9 +184,13 @@ export default function TabLayout() {
                   <BackIconSvg />
                 </Pressable>
                 <TitleText size={20}>My Profile</TitleText>
-                <Pressable onPress={() => console.log("Settings pressed")}>
-                  <SettingsIconSvg />
-                </Pressable>
+                {routeRef.current === "profileEdit" ? (
+                  <Pressable onPress={() => console.log("Settings pressed")}>
+                    <SettingsIconSvg />
+                  </Pressable>
+                ) : (
+                  <View style={{ width: 20, height: 22 }}></View>
+                )}
               </View>
               <View
                 style={{
