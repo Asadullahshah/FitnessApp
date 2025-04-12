@@ -6,6 +6,7 @@ import {
   StatusBar,
   SafeAreaView,
   Image,
+  Pressable,
 } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
@@ -65,7 +66,12 @@ const profile = () => {
               </SubTitleText>
               <SubTitleText color="#9E9E9E">joecrown@gmail.com</SubTitleText>
             </View>
-            <ButtonRed style={styles.button} heightB={30} widthB={80}>
+            <ButtonRed
+              style={styles.button}
+              heightB={30}
+              widthB={80}
+              onPress={() => console.log("Edit Pressed")}
+            >
               Edit
             </ButtonRed>
           </View>
@@ -77,12 +83,19 @@ const profile = () => {
         </View>
         <View style={styles.optionsContainer}>
           {options.map((v, i) => (
-            <Options
-              name={v}
-              IconL={optionIcons[i]}
-              IconR={ArrowRight}
+            <Pressable
               key={i}
-            />
+              onPress={() => {
+                console.log(`${v} Pressed`);
+              }}
+            >
+              <Options
+                name={v}
+                IconL={optionIcons[i]}
+                IconR={ArrowRight}
+                key={i}
+              />
+            </Pressable>
           ))}
         </View>
         <View style={styles.achievementsContainer}>
@@ -100,7 +113,14 @@ const profile = () => {
         </SubTitleText>
         <View style={[styles.optionsContainer, styles.otherOptionsContainer]}>
           {otherOptions.map((v, i) => (
-            <Options name={v} IconL={otherIcons[i]} key={i} />
+            <Pressable
+              key={i}
+              onPress={() => {
+                console.log(`${v} Pressed`);
+              }}
+            >
+              <Options name={v} IconL={otherIcons[i]} key={i} />
+            </Pressable>
           ))}
         </View>
       </View>
