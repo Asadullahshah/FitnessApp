@@ -1,11 +1,13 @@
 import DumbleSvg from "@/components/DumbleSvg";
 import HubSvg from "@/components/HubSvg";
 import ProfileSvg from "@/components/ProfileSvg";
+import { TitleText } from "@/components/ui/TitleText";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import { StyleSheet, View } from "react-native";
-
+import BackIconSvg from "@/components/ui/BackIconSvg";
+import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 export default function TabLayout() {
   return (
     <Tabs
@@ -25,7 +27,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(home)"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View
@@ -114,6 +116,18 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
+          headerShown: true,
+          headerTransparent: true,
+          headerTitle: () => <TitleText size={20}>My Profile</TitleText>,
+          headerTitleAlign: "center",
+          headerBackground: () => (
+            <View
+              style={{
+                backgroundColor: Colors.light.secondary_colors.dark_navy,
+                height: 50,
+              }}
+            />
+          ),
           tabBarIcon: ({ color, focused }) => (
             <View
               style={[

@@ -69,7 +69,7 @@ export default function Index() {
   // if(!session) return <Redirect href="/(Login)" />;
   ///////////////////////////
   if (session) {
-    return <Redirect href={"/(tabs)"} />; // Redirect to the main app or dashboard
+    return <Redirect href={"/(tabs)/(home)"} />; // Redirect to the main app or dashboard
   } else {
     return <Redirect href="/(Onboarding)" />;
   }

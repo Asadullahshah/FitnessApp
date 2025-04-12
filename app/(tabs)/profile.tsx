@@ -15,14 +15,15 @@ import BackIconSvg from "@/components/ui/BackIconSvg";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { ButtonRed } from "@/components/ui/ButtonRed";
 import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
+import { router } from "expo-router";
 
 const profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <BackIconSvg />
-          <TitleText size={20}>My Profile</TitleText>
+          <BackIconSvg onPress={() => router.back()} />
+          {/* <TitleText size={20}>My Profile</TitleText> */}
           <SettingsIconSvg />
         </View>
         <View style={styles.streakBox}>
