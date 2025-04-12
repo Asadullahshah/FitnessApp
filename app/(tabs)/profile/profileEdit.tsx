@@ -1,4 +1,13 @@
-import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Image,
+  ScrollView,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { pxToHeight, pxToWidth } from "@/utils";
 import { Colors } from "@/constants/Colors";
 import { SubTitleText } from "@/components/ui/SubTitleText";
@@ -11,57 +20,105 @@ import { WeightIconSvg } from "@/components/WeightIconSvg";
 import { HeightIconSvg } from "@/components/HeightIconSvg";
 import { ToneIconSvg } from "@/components/ToneIconSvg";
 import { SelectIconSvg } from "@/components/SelectIconSvg";
+import { useState } from "react";
 
 export default function profileEdit() {
+  const [kg, setKg] = useState(true);
+  const [cm, setCm] = useState(true);
+
   return (
     <SafeAreaView style={styles.contentContainer}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={require("@/assets/images/avatar.png")}
-          style={styles.avatar}
-        />
-        <View style={styles.uploadIcon}>
-          <UploadIconSvg />
-        </View>
-      </View>
-      <TitleText
-        mTop={12}
-        size={14}
-        color={Colors.light.primary_colors.soft_white}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === "ios" ? pxToHeight(156) : 0}
       >
-        Joseph Crown (Jojo)
-      </TitleText>
-      <SubTitleText
-        style={{ marginBottom: pxToHeight(8) }}
-        size={14}
-        color="#9E9E9E"
-      >
-        joecrown@gmail.com
-      </SubTitleText>
-      <View style={styles.input}>
-        <TextBox placeholder={"Male"} customIcon={<GenderIconSvg />} />
-      </View>
-      <View style={styles.input}>
-        <TextBox placeholder={"24"} customIcon={<CalendarIconSvg />} />
-      </View>
-      <View style={styles.input}>
-        <TextBox placeholder={"70"} customIcon={<WeightIconSvg />} />
-      </View>
-      <View style={styles.input}>
-        <TextBox placeholder={"185"} customIcon={<HeightIconSvg />} />
-      </View>
-      <View style={styles.input}>
-        <TextBox
-          placeholder={"Choose Motivational Tone"}
-          customIcon={<ToneIconSvg />}
-        />
-      </View>
-      <View style={styles.input}>
-        <TextBox
-          placeholder={"Customize Interests"}
-          customIcon={<SelectIconSvg />}
-        />
-      </View>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("@/assets/images/avatar.png")}
+              style={styles.avatar}
+            />
+            <View style={styles.uploadIcon}>
+              <UploadIconSvg />
+            </View>
+          </View>
+          <TitleText
+            mTop={12}
+            size={14}
+            color={Colors.light.primary_colors.soft_white}
+          >
+            Joseph Crown (Jojo)
+          </TitleText>
+          <SubTitleText
+            style={{ marginBottom: pxToHeight(8) }}
+            size={14}
+            color="#9E9E9E"
+          >
+            joecrown@gmail.com
+          </SubTitleText>
+          <View style={styles.input}>
+            <TextBox placeholder={"Male"} customIcon={<GenderIconSvg />} />
+          </View>
+          <View style={styles.input}>
+            <TextBox placeholder={"24"} customIcon={<CalendarIconSvg />} />
+          </View>
+          <View style={styles.interactiveBoxContainer}>
+            <View style={styles.interactiveBox}>
+              <TextBox
+                width={266}
+                placeholder={kg ? "70" : "154"}
+                customIcon={<WeightIconSvg />}
+              />
+            </View>
+            <Pressable onPress={() => setKg(!kg)}>
+              <View style={styles.interactiveButton}>
+                <TitleText
+                  style={{ textAlign: "center" }}
+                  mTop={6}
+                  color={Colors.light.primary_colors.soft_white}
+                  size={14}
+                >
+                  {kg ? "KG" : "LB"}
+                </TitleText>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.interactiveBoxContainer}>
+            <View style={styles.interactiveBox}>
+              <TextBox
+                width={266}
+                placeholder={cm ? "185" : "73"}
+                customIcon={<HeightIconSvg />}
+              />
+            </View>
+            <Pressable onPress={() => setCm(!cm)}>
+              <View style={styles.interactiveButton}>
+                <TitleText
+                  style={{ textAlign: "center" }}
+                  mTop={6}
+                  color={Colors.light.primary_colors.soft_white}
+                  size={14}
+                >
+                  {cm ? "CM" : "IN"}
+                </TitleText>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.input}>
+            <TextBox
+              placeholder={"Choose Motivational Tone"}
+              customIcon={<ToneIconSvg />}
+            />
+          </View>
+          <View style={styles.input}>
+            <TextBox
+              placeholder={"Customize Interests"}
+              customIcon={<SelectIconSvg />}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -70,7 +127,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: Colors.dark.background,
     flex: 1,
-    alignItems: "center",
   },
   avatar: {
     width: pxToWidth(75),
@@ -95,5 +151,21 @@ const styles = StyleSheet.create({
     width: pxToWidth(342),
     height: pxToHeight(48),
     marginTop: pxToHeight(16),
+  },
+  interactiveBoxContainer: {
+    flexDirection: "row",
+    gap: pxToWidth(16),
+    alignItems: "center",
+    marginTop: pxToHeight(16),
+  },
+  interactiveBox: {
+    width: pxToWidth(266),
+    height: pxToHeight(48),
+  },
+  interactiveButton: {
+    width: pxToWidth(60),
+    height: pxToHeight(48),
+    backgroundColor: "#2E7291",
+    borderRadius: 12,
   },
 });

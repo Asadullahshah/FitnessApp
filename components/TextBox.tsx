@@ -20,12 +20,22 @@ const TextBox = ({
   onChangeText,
   value,
   placeholder,
+  width,
+  height,
   ...props
 }: any) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(secureTextEntry);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          width: width ? pxToWidth(width) : styles.container.width,
+          height: height ? pxToHeight(height) : styles.container.height,
+        },
+      ]}
+    >
       {/* Left Icon */}
       {customIcon ? (
         <CustomIcon>{customIcon}</CustomIcon>
