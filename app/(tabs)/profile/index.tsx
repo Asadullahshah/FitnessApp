@@ -24,6 +24,7 @@ import { AchievementIconSvg } from "@/components/AchievemtIconSvg";
 import { BubbleIcon } from "@/components/BubbleIcon";
 import { ManualIconSvg } from "@/components/ManualIconSvg";
 import { SignOutIconSvg } from "@/components/SignOutIconSvg";
+import { router } from "expo-router";
 
 const options = [
   "Favourites",
@@ -70,7 +71,7 @@ const profile = () => {
               style={styles.button}
               heightB={30}
               widthB={80}
-              onPress={() => console.log("Edit Pressed")}
+              onPress={() => router.push("/(tabs)/profile/profileEdit")}
             >
               Edit
             </ButtonRed>
