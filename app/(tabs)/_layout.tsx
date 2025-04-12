@@ -14,18 +14,28 @@ import { useEffect, useRef } from "react";
 
 export default function TabLayout() {
   const state = useNavigationState((state) => state);
+
+  // Safely get the full route
   const fullRoute = state.routes[state.index]?.state?.routes || [];
-  const currentRoute = fullRoute[fullRoute.length - 1];
+  const currentRoute =
+    fullRoute.length > 0 ? fullRoute[fullRoute.length - 1] : null;
+
   const routeRef = useRef<string | null>(null);
 
-  useEffect(() => {
-    if (currentRoute.state && typeof currentRoute.state.index === "number") {
-      routeRef.current =
-        currentRoute.state.routeNames?.[currentRoute.state.index] ?? null;
-    } else {
-      routeRef.current = null;
-    }
-  }, [currentRoute]);
+  if (
+    currentRoute &&
+    currentRoute.state &&
+    typeof currentRoute.state.index === "number"
+  ) {
+    routeRef.current =
+      currentRoute.state.routeNames?.[currentRoute.state.index] ?? null;
+  } else {
+    routeRef.current = currentRoute?.name || null; // Fallback to the route name
+  }
+
+  console.log("Full Route:", fullRoute);
+  console.log("Current Route:", routeRef.current);
+
   return (
     <Tabs
       screenOptions={{
@@ -153,9 +163,6 @@ export default function TabLayout() {
               />
             </View>
           ),
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
           headerShown: true,
           headerStyle: {
             height: pxToHeight(156),
@@ -184,7 +191,7 @@ export default function TabLayout() {
                   <BackIconSvg />
                 </Pressable>
                 <TitleText size={20}>My Profile</TitleText>
-                {routeRef.current === "profileEdit" ? (
+                {routeRef.current !== "profileEdit" ? (
                   <Pressable onPress={() => console.log("Settings pressed")}>
                     <SettingsIconSvg />
                   </Pressable>
@@ -199,7 +206,6 @@ export default function TabLayout() {
                   height: pxToHeight(33),
                   width: pxToWidth(74),
                   marginTop: pxToHeight(19),
-                  // marginBottom: pxToHeight(18),
                   flexDirection: "row",
                   justifyContent: "center",
                   alignContent: "center",

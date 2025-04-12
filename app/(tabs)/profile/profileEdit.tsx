@@ -4,6 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { TitleText } from "@/components/ui/TitleText";
 import { UploadIconSvg } from "@/components/UploadIconSvg";
+import TextBox from "@/components/TextBox";
 
 export default function profileEdit() {
   return (
@@ -27,6 +28,9 @@ export default function profileEdit() {
       <SubTitleText size={14} color="#9E9E9E">
         joecrown@gmail.com
       </SubTitleText>
+      <View style={styles.input}>
+        <TextBox leftIcon="account-outline" />
+      </View>
     </SafeAreaView>
   );
 }
@@ -55,5 +59,10 @@ const styles = StyleSheet.create({
     width: pxToWidth(75),
     height: pxToWidth(75),
     marginTop: pxToWidth(24),
+  },
+  input: {
+    width: pxToWidth(342),
+    height: pxToHeight(48),
+    marginTop: pxToHeight(24),
   },
 });
