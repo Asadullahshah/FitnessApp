@@ -10,11 +10,9 @@ import {
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { pxToWidth, pxToHeight } from "../../utils";
-import { TitleText } from "@/components/ui/TitleText";
-import BackIconSvg from "@/components/ui/BackIconSvg";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { ButtonRed } from "@/components/ui/ButtonRed";
-import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
+import { InfoBox } from "@/components/InfoBox";
 
 const profile = () => {
   return (
@@ -32,11 +30,15 @@ const profile = () => {
               </SubTitleText>
               <SubTitleText color="#9E9E9E">joecrown@gmail.com</SubTitleText>
             </View>
-            <ButtonRed style={styles.button} heightB={30} widthB={83}>
+            <ButtonRed style={styles.button} heightB={30} widthB={80}>
               Edit
             </ButtonRed>
           </View>
-          <View style={styles.infoContainer}></View>
+          <View style={styles.infoContainer}>
+            <InfoBox title="185cm">Height</InfoBox>
+            <InfoBox title="24 Y/O">Age</InfoBox>
+            <InfoBox title="70KG">Weight</InfoBox>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -48,13 +50,13 @@ export default profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
+    // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
     backgroundColor: Colors.dark.background,
   },
   accountContainer: {
     marginTop: pxToHeight(32),
-    width: pxToWidth(243),
-    height: pxToHeight(55),
+    width: pxToWidth(350),
+    height: pxToHeight(70),
   },
   accountDetails: {
     flexDirection: "row",
@@ -64,16 +66,24 @@ const styles = StyleSheet.create({
     width: pxToWidth(55),
     height: pxToWidth(55),
     borderRadius: pxToWidth(55),
-    marginLeft: pxToWidth(8.5),
+    // marginLeft: pxToWidth(8.5),
   },
   contentContainer: {
-    marginHorizontal: pxToWidth(24),
+    flex: 1,
+    alignItems: "center",
   },
   button: {
     borderRadius: 999999,
   },
   infoContainer: {
     flexDirection: "row",
+    height: pxToHeight(65),
+    width: pxToWidth(341),
+    backgroundColor: Colors.light.secondary_colors.navy_blue,
+    marginTop: pxToHeight(24),
+    borderRadius: pxToWidth(20),
+    alignItems: "center",
+    justifyContent: "space-around",
   },
   text: {
     color: "white",
