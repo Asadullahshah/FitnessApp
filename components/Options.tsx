@@ -6,23 +6,30 @@ import { Colors } from "@/constants/Colors";
 
 export const Options = ({
   name,
+  children,
   IconR,
   IconL,
 }: {
   name: string;
+  children?: React.ReactNode;
   IconR?: React.ElementType;
   IconL: React.ElementType;
 }) => {
   return (
-    <View style={[styles.bar]}>
+    <View
+      style={[styles.bar, children ? { height: pxToHeight(40) } : undefined]}
+    >
       <IconL />
-      <SubTitleText
-        style={styles.nameText}
-        size={14}
-        color={Colors.light.primary_colors.soft_white}
-      >
-        {name}
-      </SubTitleText>
+      <View style={styles.optionsTextContainer}>
+        <SubTitleText size={14} color={Colors.light.primary_colors.soft_white}>
+          {name}
+        </SubTitleText>
+        {children && (
+          <SubTitleText mTop={2} size={12} color="#9E9E9E">
+            {children}
+          </SubTitleText>
+        )}
+      </View>
       {IconR && (
         <View style={styles.iconRight}>
           <IconR />
@@ -37,12 +44,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: pxToWidth(342),
     height: pxToHeight(20),
-  },
-  nameText: {
-    marginLeft: pxToWidth(16),
+    alignItems: "center",
   },
   iconRight: {
     position: "absolute",
     right: 0,
   },
+  optionsTextContainer: { flexDirection: "column", marginLeft: pxToWidth(16) },
 });

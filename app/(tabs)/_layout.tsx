@@ -18,22 +18,21 @@ export default function TabLayout() {
   // Safely get the full route
   const fullRoute = state.routes[state.index]?.state?.routes || [];
   const currentRoute =
-    fullRoute.length > 0 ? fullRoute[fullRoute.length - 1] : null;
+    fullRoute.length > 0 ? fullRoute[fullRoute.length - 1].state?.routes : null;
 
   const routeRef = useRef<string | null>(null);
 
   if (
     currentRoute &&
-    currentRoute.state &&
-    typeof currentRoute.state.index === "number"
+    currentRoute[currentRoute.length - 1].name &&
+    typeof currentRoute[currentRoute.length - 1].name === "string"
   ) {
-    routeRef.current =
-      currentRoute.state.routeNames?.[currentRoute.state.index] ?? null;
+    routeRef.current = currentRoute[currentRoute.length - 1].name ?? null;
   } else {
-    routeRef.current = currentRoute?.name || null; // Fallback to the route name
+    routeRef.current = currentRoute?.[0]?.name || null; // Fallback to the route name
   }
 
-  console.log("Full Route:", fullRoute);
+  console.log("Full Route:", fullRoute[fullRoute.length - 1].state?.routes);
   console.log("Current Route:", routeRef.current);
 
   return (
@@ -165,7 +164,7 @@ export default function TabLayout() {
           ),
           headerShown: true,
           headerStyle: {
-            height: pxToHeight(156),
+            height: pxToHeight(routeRef.current === "settings" ? 112 : 156),
             backgroundColor: Colors.light.secondary_colors.dark_navy,
           },
           headerTitle: () => (
@@ -190,38 +189,25 @@ export default function TabLayout() {
                 >
                   <BackIconSvg />
                 </Pressable>
-                <TitleText size={20}>My Profile</TitleText>
-                {routeRef.current !== "profileEdit" ? (
-                  <Pressable onPress={() => console.log("Settings pressed")}>
+                <TitleText size={20}>
+                  {routeRef.current === "settings" ? "Settings" : "My Profile"}
+                </TitleText>
+                {routeRef.current === "profileEdit" ||
+                routeRef.current === "settings" ? (
+                  <View style={{ width: 20, height: 22 }}></View>
+                ) : (
+                  <Pressable
+                    onPress={() => router.push("/(tabs)/profile/settings")}
+                  >
                     <SettingsIconSvg />
                   </Pressable>
-                ) : (
-                  <View style={{ width: 20, height: 22 }}></View>
                 )}
               </View>
-              <View
-                style={{
-                  backgroundColor: Colors.dark.background,
-                  borderRadius: 8,
-                  height: pxToHeight(33),
-                  width: pxToWidth(74),
-                  marginTop: pxToHeight(19),
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: "marker",
-                    fontSize: pxToHeight(20),
-                    color: "white",
-                  }}
-                >
-                  {streak}🔥
-                </Text>
-              </View>
+              {routeRef.current !== "settings" && (
+                <View style={styles.streakBox}>
+                  <Text style={styles.streakText}>{streak}🔥</Text>
+                </View>
+              )}
             </View>
           ),
         }}
@@ -253,13 +239,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   streakBox: {
-    marginTop: 8,
-    backgroundColor: Colors.light.primary_colors.sky_blue,
+    backgroundColor: Colors.dark.background,
     borderRadius: 8,
-    padding: 4,
+    height: pxToHeight(33),
+    width: pxToWidth(74),
+    marginTop: pxToHeight(19),
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   streakText: {
-    color: Colors.light.primary_colors.dark_gray,
-    fontWeight: "bold",
+    fontFamily: "marker",
+    fontSize: pxToHeight(20),
+    color: "white",
   },
 });

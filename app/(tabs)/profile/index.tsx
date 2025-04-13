@@ -25,6 +25,7 @@ import { BubbleIcon } from "@/components/BubbleIcon";
 import { ManualIconSvg } from "@/components/ManualIconSvg";
 import { SignOutIconSvg } from "@/components/SignOutIconSvg";
 import { router } from "expo-router";
+import { TitleText } from "@/components/ui/TitleText";
 
 const options = [
   "Favourites",
@@ -104,14 +105,14 @@ const profile = () => {
             <BubbleIcon img={v} key={i} />
           ))}
         </View>
-        <SubTitleText
+        <TitleText
           style={styles.text}
           color={Colors.light.primary_colors.soft_white}
           size={18}
           mTop={20}
         >
           Others
-        </SubTitleText>
+        </TitleText>
         <View style={[styles.optionsContainer, styles.otherOptionsContainer]}>
           {otherOptions.map((v, i) => (
             <Pressable
