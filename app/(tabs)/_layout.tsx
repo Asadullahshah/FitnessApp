@@ -32,8 +32,8 @@ export default function TabLayout() {
     routeRef.current = currentRoute?.[0]?.name || null; // Fallback to the route name
   }
 
-  console.log("Full Route:", fullRoute[fullRoute.length - 1].state?.routes);
-  console.log("Current Route:", routeRef.current);
+  // console.log("Full Route:", fullRoute[fullRoute.length - 1].state?.routes);
+  // console.log("Current Route:", routeRef.current);
 
   return (
     <Tabs
