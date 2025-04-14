@@ -7,8 +7,9 @@ import {
   SafeAreaView,
   Image,
   Pressable,
+  ScrollView
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { Colors } from "@/constants/Colors";
 import { pxToWidth, pxToHeight } from "@/utils";
 import { SubTitleText } from "@/components/ui/SubTitleText";
@@ -26,7 +27,8 @@ import { ManualIconSvg } from "@/components/ManualIconSvg";
 import { SignOutIconSvg } from "@/components/SignOutIconSvg";
 import { router } from "expo-router";
 import { TitleText } from "@/components/ui/TitleText";
-
+import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
+import BackIconSvg from "@/components/ui/BackIconSvg";
 const options = [
   "Favourites",
   "Premium & Plans",
@@ -53,8 +55,33 @@ const bubbles = [
 ];
 
 const profile = () => {
+  const routeRef = useRef<string | null>(null);
+
   return (
     <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          width: "100%",
+          alignSelf: "center",
+          backgroundColor: Colors.light.secondary_colors.dark_navy,
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+        }}
+      >
+        <View style={{width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+          <BackIconSvg onPress={() => router.back()} />
+            <Pressable onPress={() => router.push("/(tabs)/profile/settings")}>
+              <SettingsIconSvg />
+            </Pressable>
+        </View>
+        <View style={styles.streakBox}>
+          <Text style={styles.streakText}>20🔥</Text>
+        </View>
+      </View>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.contentContainer}>
         <View style={styles.accountContainer}>
           <View style={styles.accountDetails}>
@@ -126,6 +153,7 @@ const profile = () => {
           ))}
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -139,13 +167,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.background,
   },
   accountContainer: {
-    marginTop: pxToHeight(32),
+    // marginTop: pxToHeight(32),
     width: pxToWidth(350),
     height: pxToHeight(70),
   },
   accountDetails: {
     flexDirection: "row",
-    gap: pxToWidth(16),
+    justifyContent: "space-between",
   },
   avatar: {
     width: pxToWidth(55),
@@ -154,8 +182,8 @@ const styles = StyleSheet.create({
     // marginLeft: pxToWidth(8.5),
   },
   contentContainer: {
-    flex: 1,
-    marginLeft: pxToWidth(24),
+    padding: 24,
+    height: "100%",
   },
   button: {
     borderRadius: 999999,
@@ -178,6 +206,7 @@ const styles = StyleSheet.create({
     width: pxToWidth(342),
     flexDirection: "column",
     gap: pxToHeight(16),
+    padding: 10
   },
   otherOptionsContainer: {
     marginTop: pxToHeight(24),
@@ -191,5 +220,21 @@ const styles = StyleSheet.create({
     gap: pxToWidth(8),
     alignItems: "center",
     // justifyContent: "center",
+  },
+  streakBox: {
+    backgroundColor: Colors.dark.background,
+    borderRadius: 8,
+    height: pxToHeight(33),
+    width: pxToWidth(74),
+    marginTop: pxToHeight(19),
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  streakText: {
+    fontFamily: "marker",
+    fontSize: pxToHeight(20),
+    color: "white",
   },
 });

@@ -4,12 +4,13 @@ import { Colors } from "@/constants/Colors";
 import { supabase } from "@/lib/supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { Button, Image, TouchableOpacity, ScrollView } from "react-native";
+import { Button, Image, TouchableOpacity, ScrollView, Platform, StatusBar, ImageBackground } from "react-native";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import LineSvg from "@/components/ui/LineSvg";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import ChallengeSvg from "@/components/ui/ChallengeSvg";
+import { pxToHeight } from "@/utils";
 
 const index = () => {
   const clearStorage = async () => {
@@ -114,7 +115,15 @@ const index = () => {
 
       {/* Challenge Section */}
       <TouchableOpacity style={styles.challengeCard}>
-        <Text style={styles.challengeIcon}>💎</Text>
+        <ImageBackground source={require("@/assets/images/Exercise-of-the-month.png")} style={{ width: "70%", height: '100%', borderRadius: 16, alignSelf: "flex-start" }} />
+        <View style={{position: "absolute", right: "20%", top: "10%", flexDirection: "column", }}>
+          <Text style={[styles.challengeIcon, {fontSize: 40}]}>
+            March
+          </Text>
+          <Text style={[styles.challengeIcon, {fontSize: 14}]}>
+            Challenge
+          </Text>
+        </View>
       </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -127,13 +136,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.light.background,
+    marginTop:
+          Platform.OS == "android"
+            ? (StatusBar.currentHeight || 0) + pxToHeight(12)
+            : pxToHeight(12),
   },
   exerciseCard: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: 'center',
     backgroundColor: "#b0dffb",
-    // borderRadius: 16,
     padding: 12,
     marginBottom: 20,
     position: "relative",
@@ -266,13 +277,19 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   challengeCard: {
-    backgroundColor: '#232b3d',
-    padding: 20,
+    backgroundColor: '#0A4159',
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    height: 150,
     borderRadius: 16,
     alignItems: 'center',
+    marginBottom: 20,
   },
   challengeIcon: {
-    fontSize: 28,
     color: '#fff',
-  },
+    fontWeight: "700",
+    fontFamily: 'bold',
+    alignSelf: 'center',
+    },
 });

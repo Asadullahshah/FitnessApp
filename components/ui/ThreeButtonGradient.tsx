@@ -28,7 +28,7 @@ const ThreeButtonGradient: React.FC<Props> = ({
 
       <TouchableOpacity onPress={onButton2Press}>
         {/* <Text style={styles.text}>Button 2</Text> */}
-        <Image source={require('../../assets/images/surpriseBox.png')} style={{ width: 32, height: 32 }} />
+        <Image source={require('../../assets/images/surpriseBox.png')} style={{ width: 52, height: 52 }} />
       </TouchableOpacity>
 
       <TouchableOpacity  onPress={onButton3Press}>

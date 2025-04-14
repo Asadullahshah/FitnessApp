@@ -10,6 +10,7 @@ import BackIconSvg from "@/components/ui/BackIconSvg";
 import { pxToWidth, pxToHeight } from "../../utils";
 import { useNavigationState } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
+import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 
 export default function TabLayout() {
   const state = useNavigationState((state) => state);
@@ -145,6 +146,7 @@ export default function TabLayout() {
           headerTransparent: true,
           headerTitle: () => <TitleText size={20}>My Profile</TitleText>,
           headerTitleAlign: "center",
+          // headerBackVisible: false,
           headerBackground: () => (
             <View
               style={{
@@ -171,54 +173,6 @@ export default function TabLayout() {
                     : Colors.light.primary_colors.coral_red
                 }
               />
-            </View>
-          ),
-          headerShown: true,
-          headerStyle: {
-            height: pxToHeight(routeRef.current === "settings" ? 112 : 156),
-            backgroundColor: Colors.light.secondary_colors.dark_navy,
-          },
-          headerTitle: () => (
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  height: pxToHeight(32),
-                  width: pxToWidth(341),
-                  marginHorizontal: pxToWidth(25),
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    router.back();
-                  }}
-                >
-                  <BackIconSvg />
-                </Pressable>
-                <TitleText size={20}>
-                  {routeRef.current === "settings" ? "Settings" : "My Profile"}
-                </TitleText>
-                {routeRef.current === "profileEdit" ||
-                routeRef.current === "settings" ? (
-                  <View style={{ width: 20, height: 22 }}></View>
-                ) : (
-                  <Pressable
-                    onPress={() => router.push("/(tabs)/profile/settings")}
-                  >
-                    <SettingsIconSvg />
-                  </Pressable>
-                )}
-              </View>
-              {routeRef.current !== "settings" && (
-                <View style={styles.streakBox}>
-                  <Text style={styles.streakText}>{streak}🔥</Text>
-                </View>
-              )}
             </View>
           ),
         }}

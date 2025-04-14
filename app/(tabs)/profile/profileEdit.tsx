@@ -28,6 +28,16 @@ export default function profileEdit() {
 
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <View style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                width: "100%",
+                alignSelf: "center",
+                backgroundColor: Colors.light.secondary_colors.dark_navy,
+                paddingHorizontal: 10,
+                paddingVertical: 30,
+              }}/>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={{ flex: 1 }}

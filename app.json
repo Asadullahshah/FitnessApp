@@ -10,6 +10,7 @@
     "newArchEnabled": true,
     "deeplinking": true,
     "ios": {
+      "bundleIdentifier": "com.gym.fitnessapp",
       "supportsTablet": false
     },
     "android": {
