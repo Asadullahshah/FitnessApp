@@ -122,7 +122,7 @@ const index = () => {
           return;
         }
           setIsLoading(false);
-          router.replace("/(tabs)"); 
+          router.replace("/(tabs)/(home)"); 
         }
         if (error) {
           console.error("OTP Verification Error:", error.message);

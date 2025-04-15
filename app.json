@@ -11,7 +11,10 @@
     "deeplinking": true,
     "ios": {
       "bundleIdentifier": "com.gym.fitnessapp",
-      "supportsTablet": false
+      "supportsTablet": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

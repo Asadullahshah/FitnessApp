@@ -4,8 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import BelliconSvg from './BellIconSvg';
 
 type Props = {
-  onButton1Press: () => void;
-  onButton2Press: () => void;
+  onButton1Press?: () => void;
+  onButton2Press?: () => void;
   onButton3Press?: () => void;
 };
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: 20,
-    height: 46
+    height: 46,
   },
   button: {
     backgroundColor: 'rgba(255,255,255,0.2)',
