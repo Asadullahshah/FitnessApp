@@ -3,34 +3,9 @@ import { Colors } from "@/constants/Colors";
 import { pxToHeight, pxToWidth } from "@/utils";
 import { groupNotifications } from "@/constants/Scripts";
 import NotificationItem from "@/components/NotificationItem";
+import { notifications } from "@/constants/DummyData";
 
 const notification = () => {
-  const notifications = [
-    {
-      id: '1',
-      title: 'No more scrolling, get up and stretch!',
-      date: '2025-04-14T10:00:00Z',
-      icon: '✋',
-    },
-    {
-      id: '2',
-      title: 'Drink water, pity yourself!',
-      date: '2025-04-15T13:10:00Z',
-      icon: '💧',
-    },
-    {
-      id: '3',
-      title: 'Congrats! You didn’t puss out today!',
-      date: '2025-04-09T08:30:00Z',
-      icon: '💪',
-    },
-    {
-      id: '4',
-      title: 'Hey, it’s time for lunch',
-      date: '2025-04-08T12:00:00Z',
-      icon: '🍱',
-    },
-  ];
   const { thisWeek, lastWeek } = groupNotifications(notifications);
   return (
     <SafeAreaView style={styles.container}>
@@ -42,7 +17,7 @@ const notification = () => {
         </View>
       </View>
       <ScrollView style={styles.scrollContainer}>
-        {/* <Text style={styles.sectionTitle}>This week</Text>
+        <Text style={styles.sectionTitle}>This week</Text>
         {thisWeek.map((item: any) => (
           <NotificationItem key={item.id} {...item} />
         ))}
@@ -50,12 +25,7 @@ const notification = () => {
         <Text style={styles.sectionTitle}>Last week</Text>
         {lastWeek.map((item: any) => (
           <NotificationItem key={item.id} {...item} />
-        ))} */}
-        {
-          notifications.map((item: any) => (
-            <NotificationItem key={item.id} {...item} />
-          ))
-        }
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
