@@ -71,7 +71,7 @@ const profile = () => {
           paddingVertical: 10,
         }}
       >
-        <View style={{width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+        <View style={{width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 10}}>
           <BackIconSvg onPress={() => router.back()} />
             <Pressable onPress={() => router.push("/(tabs)/profile/settings")}>
               <SettingsIconSvg />
@@ -163,7 +163,7 @@ export default profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
     backgroundColor: Colors.dark.background,
   },
   accountContainer: {

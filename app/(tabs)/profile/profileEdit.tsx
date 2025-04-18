@@ -7,6 +7,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
 } from "react-native";
 import { pxToHeight, pxToWidth } from "@/utils";
 import { Colors } from "@/constants/Colors";
@@ -136,6 +137,7 @@ export default function profileEdit() {
 const styles = StyleSheet.create({
   contentContainer: {
     backgroundColor: Colors.dark.background,
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
     flex: 1,
   },
   avatar: {

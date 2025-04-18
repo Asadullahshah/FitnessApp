@@ -12,6 +12,8 @@ import { SoundIconSvg } from "@/components/SoundIconSvg";
 import { pxToHeight, pxToWidth } from "@/utils";
 import { TitleText } from "@/components/ui/TitleText";
 import { generalIcons, supportUsIcons, voiceIcons } from "@/constants/Icons";
+import { Platform } from "react-native";
+import { StatusBar } from "react-native";
 
 const workoutSettings = ["Countdown Time", "Rest Set", "Sound"];
 const workoutDescriptions = ["15 secs", "30 secs", ""];
@@ -135,6 +137,7 @@ export default function settings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
     backgroundColor: Colors.dark.background,
   },
   contentContainer: {
