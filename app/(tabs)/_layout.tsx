@@ -112,7 +112,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="hub"
+        name="Hub"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View
