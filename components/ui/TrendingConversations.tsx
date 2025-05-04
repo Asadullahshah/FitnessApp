@@ -1,7 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import React from "react";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Thumbsup from "../ThumbsupSvg";
+import CommentsSvg from "../CommentsSvg";
 
 interface ActivityCardProps {
   title: string;
@@ -10,30 +12,39 @@ interface ActivityCardProps {
   comments: number;
 }
 
-const TrendingConversations: React.FC<ActivityCardProps> = ({ title, description, likes, comments }) => {
+const { width: windowWidth } = Dimensions.get("window");
+
+const TrendingConversations: React.FC<ActivityCardProps> = ({
+  title,
+  description,
+  likes,
+  comments,
+}) => {
   return (
     <View style={styles.card}>
-      {/* Top Section */}
-      <View style={styles.topSection}>
-        <Image
-          source={{ uri: 'https://i.pravatar.cc/100' }} // Dummy avatar
-          style={styles.avatar}
-        />
-        <View style={{ marginLeft: 10 }}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.description}>{description}</Text>
+      <View style={{ flex: 1, justifyContent: "space-between" }}>
+        {/* Top Section */}
+        <View style={styles.topSection}>
+          <Image
+            source={{ uri: "https://i.pravatar.cc/100" }} // Dummy avatar
+            style={styles.avatar}
+          />
+          <View style={{ marginLeft: 10, width: "90%" }}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
+          </View>
         </View>
-      </View>
 
-      {/* Bottom Section */}
-      <View style={styles.bottomSection}>
-        <View style={styles.iconWithText}>
-          <FontAwesome name="thumbs-up" size={18} color="#4FC3F7" />
-          <Text style={styles.bottomText}>{likes} gave kudos</Text>
-        </View>
-        <View style={styles.iconWithText}>
-          <FontAwesome name="comment-o" size={18} color="#4FC3F7" />
-          <Text style={styles.bottomText}>{comments} comments</Text>
+        {/* Bottom Section */}
+        <View style={styles.bottomSection}>
+          <View style={styles.iconWithText}>
+            <Thumbsup width={14} height={14} />
+            <Text style={styles.bottomText}>{likes} gave kudos</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <CommentsSvg width={13} height={14} />
+            <Text style={styles.bottomText}>{comments} comments</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -42,12 +53,13 @@ const TrendingConversations: React.FC<ActivityCardProps> = ({ title, description
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#11151c',
-    padding: 16,
+    backgroundColor: "#0F1E2D",
+    width: windowWidth - 20,
+    padding: 12,
     borderRadius: 16,
     marginVertical: 8,
     marginHorizontal: 10,
-    shadowColor: 'red',
+    shadowColor: "red",
     shadowOffset: {
       width: 100,
       height: 200,
@@ -56,40 +68,48 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   topSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+    flexDirection: "row",
+    marginBottom: 8,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 24,
+    height: 24,
     borderRadius: 20,
   },
   title: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+    color: "#fff",
+    fontWeight: 500,
+    lineHeight: 15,
+    fontFamily: "regular",
+    fontSize: 12,
   },
   description: {
-    color: '#ccc',
+    color: "#ccc",
     marginTop: 4,
-    fontSize: 14,
+    fontSize: 10,
     flexShrink: 1,
+    fontWeight: 300,
+    lineHeight: 15,
+    fontFamily: "regular",
   },
   bottomSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
+    flexDirection: "row",
+    paddingHorizontal: "10%",
+    justifyContent: "space-between",
+    // marginTop: 8,
   },
   iconWithText: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
   },
   bottomText: {
-    color: '#ccc',
+    color: "#ccc",
     marginLeft: 6,
-    fontSize: 13,
+    fontSize: 10,
+    fontWeight: 300,
+    fontFamily: "regular",
   },
 });
 
