@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "deeplinking": true,
     "ios": {
-      "bundleIdentifier": "com.gym.fitnessapp",
+      "bundleIdentifier": "com.gym.fitnessappios",
       "supportsTablet": false,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
