@@ -1,257 +1,472 @@
+// App.js or your screen file (e.g., PickYourMoveScreen.js)
+import React, { useState, useEffect, useRef } from "react";
 import {
-  Dimensions,
-  Platform,
-  ScrollView,
-  StatusBar,
   StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+  Modal,
+  Platform,
+  Pressable,
 } from "react-native";
-import { Colors } from "@/constants/Colors";
-import SafeView from "@/components/ui/SafeView";
-import { TitleText } from "@/components/ui/TitleText";
-import { Header } from "@/components/ui/Header";
-import { SubTitleText } from "@/components/ui/SubTitleText";
-import { WorkoutTile } from "@/components/ui/WorkoutTile";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+import { pxToHeight, pxToWidth } from "@/utils";
+import { LinearGradient } from "expo-linear-gradient";
 import { ButtonRed } from "@/components/ui/ButtonRed";
-import { BottomText } from "@/components/ui/BottomText";
-import { router } from "expo-router";
-import { useState } from "react";
+// import { Ionicons } from '@expo/vector-icons'; // Example for hand icon
 
-const { width, height } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const pxtowidth = (px: number) => (px / 390) * width;
-const pxtoheight = (px: number) => (px / 844) * height;
-
-const workouts = ["Push-ups", "Side Squats", "Jumping Jacks"];
-
-const colors = [
-  Colors.light.primary_colors.sky_blue,
-  Colors.light.primary_colors.coral_red,
-  Colors.light.primary_colors.mint_green,
+const EXERCISES_DATA = [
+  {
+    id: "1",
+    name: "Push-Ups",
+    image: require("@/assets/images/push-ups.png"), // Replace with your actual image path
+    repsOptions: [0, 5, 10, 15],
+    motivation: "Every legend starts at zero",
+  },
+  {
+    id: "2",
+    name: "Squats",
+    image: require("@/assets/images/side-squats.png"), // Replace with your actual image path
+    repsOptions: [0, 8, 12, 20],
+    motivation: "Feel the burn, embrace the strength!",
+  },
+  {
+    id: "3",
+    name: "Plank",
+    image: require("@/assets/images/jumping-jacks.png"), // Replace with your actual image path
+    repsOptions: [0, 30, 60, 90], // Assuming seconds for plank
+    isDuration: true, // To show "sec"
+    motivation: "Hold strong, your core will thank you.",
+  },
 ];
 
-const workoutImgs = [
-  require("@/assets/images/push-ups.png"),
-  require("@/assets/images/side-squats.png"),
-  require("@/assets/images/jumping-jacks.png"),
-];
+const SWIPE_INSTRUCTION_SEEN_KEY = "@swipeInstructionSeen";
 
 const index = () => {
-  const arr = Array.from({ length: 100 }, (_, i) => i);
-  const [workOut, setWorkOut] = useState(Array(3).fill(false));
-  console.log(workOut);
-  return (
-    <SafeView style={styles.container}>
-      {/* <Header title={"Entering the Arena..."} /> */}
-      <ScrollView showsVerticalScrollIndicator={false} style={{ padding: 20 }}>
-        <TitleText
-          size={20}
-          color={Colors.light.primary_colors.soft_white}
-          style={{
-            textAlign: "left",
-            alignSelf: "flex-start",
-            marginTop: pxtoheight(17),
-          }}
-        >
-          Welcome, Warrior
-        </TitleText>
-        <SubTitleText
-          mTop={12}
-          size={12}
-          color={Colors.light.primary_colors.soft_white}
-          style={{ textAlign: "left", alignSelf: "flex-start" }}
-        >
-          Let's see what we're working with, how many reps can you do? No
-          worries if one exercise feels tough, just modify or switch to
-          something that feels right for you!
-        </SubTitleText>
-        <SubTitleText
-          mTop={16}
-          size={12}
-          color={Colors.light.primary_colors.soft_white}
-          style={{ textAlign: "left", alignSelf: "flex-start" }}
-        >
-          We just want to get your blood pumping as you explore the app.{"\n"}
-          <SubTitleText
-            mTop={0}
-            size={12}
-            color={Colors.light.primary_colors.mint_green}
-            style={{ textAlign: "left", alignSelf: "flex-start" }}
+  const [exercises, setExercises] = useState(EXERCISES_DATA);
+  const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(0);
+  const [selectedReps, setSelectedReps] = useState(null);
+  const [showSwipeInstruction, setShowSwipeInstruction] = useState(false);
+  const flatListRef = useRef(null);
+
+  useEffect(() => {
+    // Check if user has seen the instruction before
+    const checkInstructionStatus = async () => {
+      try {
+        const value = await AsyncStorage.getItem(SWIPE_INSTRUCTION_SEEN_KEY);
+        if (value === null) {
+          setShowSwipeInstruction(true); // Show for new users
+        }
+      } catch (e) {
+        console.error("Failed to load swipe instruction status.", e);
+      }
+    };
+    checkInstructionStatus();
+  }, []);
+
+  const currentExercise = exercises[selectedExerciseIndex];
+
+  const handleRepsSelect = (reps: any) => {
+    setSelectedReps(reps);
+  };
+
+  const handleStartMoving = () => {
+    if (selectedReps === null && currentExercise.repsOptions[0] !== 0) {
+      // Allow 0 reps without explicit selection
+      alert(
+        `Please select how many ${
+          currentExercise.isDuration ? "seconds" : "reps"
+        } you can do for ${currentExercise.name}.`
+      );
+      return;
+    }
+    const repsToLog =
+      selectedReps === null ? currentExercise.repsOptions[0] : selectedReps;
+    console.log(`Starting move: ${currentExercise.name}, Reps: ${repsToLog}`);
+    // Navigate to workout screen or perform other action
+    alert(
+      `Let's do ${repsToLog} ${
+        currentExercise.isDuration ? "seconds of" : ""
+      } ${currentExercise.name}!`
+    );
+  };
+
+  const handleDoLater = () => {
+    console.log("User chose to do it later.");
+    // Navigate back or to a different screen
+    alert("No problem! Come back when you are ready.");
+  };
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      const newIndex = viewableItems[0].index;
+      if (newIndex !== selectedExerciseIndex) {
+        setSelectedExerciseIndex(newIndex);
+        setSelectedReps(null); // Reset reps when exercise changes
+        if (showSwipeInstruction) {
+          dismissSwipeInstruction(); // Dismiss if user swipes
+        }
+      }
+    }
+  }).current;
+
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50 }).current;
+
+  const dismissSwipeInstruction = async () => {
+    if (showSwipeInstruction) {
+      setShowSwipeInstruction(false);
+      try {
+        await AsyncStorage.setItem(SWIPE_INSTRUCTION_SEEN_KEY, "true");
+      } catch (e) {
+        console.error("Failed to save swipe instruction status.", e);
+      }
+    }
+  };
+
+  const renderExerciseCard = ({ item, index }: any) => (
+    <View style={styles.cardContainer}>
+      <Image
+        source={item.image}
+        style={styles.exerciseImage}
+        resizeMode="contain"
+      />
+      {/* <Text style={styles.exerciseName}>{item.name}</Text> */}
+      <LinearGradient
+        colors={["#4FC3F7", "#FF6F61"]}
+        start={{ x: 0.1, y: 0.2 }}
+        end={{ x: 1, y: 0 }}
+        style={{
+          paddingVertical: 8,
+          paddingHorizontal: 12,
+          borderRadius: 8,
+          marginBottom: 35,
+          opacity: 0.2,
+        }}
+      >
+        <Text style={styles.exerciseName}>{item.name}</Text>
+      </LinearGradient>
+      <View style={styles.repsSelectionContainer}>
+        {item.repsOptions.map((reps: any) => (
+          <TouchableOpacity
+            key={reps}
+            style={[
+              styles.repButton,
+              selectedReps === reps && styles.selectedRepButton,
+            ]}
+            onPress={() => handleRepsSelect(reps)}
           >
-            PS: This counts as a warm up.
-          </SubTitleText>
-        </SubTitleText>
-        <TitleText
-          size={16}
-          color={Colors.light.primary_colors.soft_white}
-          style={{
-            textAlign: "left",
-            alignSelf: "flex-start",
-            marginTop: pxtoheight(17),
-          }}
-        >
-          👊Pick Your Move{" "}
-          <SubTitleText
-            mTop={0}
-            size={12}
-            color={Colors.light.inputText}
-            style={{ textAlign: "left", alignSelf: "flex-start" }}
-          >
-            (Tap to Select)
-          </SubTitleText>
-        </TitleText>
-        {workoutImgs.map((v, i) => (
-          <WorkoutTile
-            onPress={() => {
-              const newWorkout = [...workOut];
-              newWorkout[i] = !newWorkout[i];
-              setWorkOut(newWorkout);
-              console.log("newWorkout ===>",newWorkout);
-            }}
-            style={{
-              marginTop: i == 0 ? pxtoheight(16) : pxtoheight(32),
-              borderWidth: workOut[i] ? pxtowidth(1) : 0,
-              borderColor: workOut[i]
-                ? Colors.light.primary_colors.sky_blue
-                : undefined,
-            }}
-            title={workouts[i]}
-            dotColor={colors[i]}
-            img={v}
-            key={i}
-          />
+            <Text
+              style={[
+                styles.repButtonText,
+                selectedReps === reps && styles.selectedRepButtonText,
+              ]}
+            >
+              {reps}
+            </Text>
+          </TouchableOpacity>
         ))}
+      </View>
+      <View style={styles.motivatonContainer}>
+        <Text style={styles.motivationText}>{currentExercise.motivation}</Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.subHeader}>👊 Pick Your Move</Text>
+        <Text style={styles.questionText}>
+          How many {currentExercise.isDuration ? "seconds" : "reps"} can you do?
+        </Text>
+
+        <View style={styles.carouselContainer}>
+          <FlatList
+            ref={flatListRef}
+            data={exercises}
+            renderItem={renderExerciseCard}
+            keyExtractor={(item) => item.id}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onViewableItemsChanged={onViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
+            style={styles.flatList}
+            contentContainerStyle={styles.flatListContent}
+            onScrollBeginDrag={dismissSwipeInstruction} // Dismiss on manual scroll start
+          />
+        </View>
+
+        <View style={styles.footerInfo}>
+          <Text style={styles.infoText}>
+            If one exercise feels tough, just modify or swipe to something that
+            feels right for you!
+          </Text>
+          <Text style={styles.psText}>PS: This counts as a warm up.</Text>
+        </View>
+
         <ButtonRed
-          onPress={() =>
-            router.push({
-              pathname: "/ready",
-              params: {
-                workout: workOut,
-              },
-            })
-          }
-          heightB={48}
-          widthB={342}
-          marginT={24}
+          onPress={handleStartMoving}
+          style={styles.startMovingButton}
+          children={"Start Moving!"}
+        />
+
+        <Text style={styles.iWillDoText}>
+          I will do this, but {/* <Pressable onPress={handleDoLater}> */}
+          <Text style={styles.doLaterText}>Later</Text>
+          {/* </Pressable> */}
+        </Text>
+
+        {/* Swipe Instruction Modal */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showSwipeInstruction}
+          onRequestClose={dismissSwipeInstruction} // For Android back button
         >
-          Start Moving!
-        </ButtonRed>
-        <SubTitleText
-          size={14}
-          mTop={24}
-          style={{ marginBottom: pxtoheight(40) }}
-        >
-          I will do this, but <TitleText size={16}>Later</TitleText>
-        </SubTitleText>
-        {/* {arr.map(() => (
-            <TitleText>Hi</TitleText>
-          ))} */}
-      </ScrollView>
-    </SafeView>
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={dismissSwipeInstruction} // Dismiss on tap anywhere on overlay
+          >
+            <View style={styles.modalContent}>
+              {/* This View is to prevent the tap from propagating if you only want the card area to be non-tappable to dismiss */}
+              <View onStartShouldSetResponder={() => true}>
+                <Text style={styles.modalSwipeText}>SWIPE</Text>
+                <Text style={styles.modalSwipeIcon}>👈 👉</Text>
+                {/* Or use an Icon: <Ionicons name="hand-left-outline" size={50} color="#FFF" /> */}
+                <Text style={styles.modalInstructionText}>
+                  to scroll to a different workout
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default index;
+const cardWidth = pxToWidth(310);
+const cardHeight = cardWidth + pxToHeight(37); // Adjust as needed
+const repButtonWidth = 30;
+const repButtonHeight = 30; // Adjust as needed
+const CardImagewidth = 262;
+const CardImageheight = 132;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    marginTop:
-          Platform.OS == "android"
-            ? (StatusBar.currentHeight || 0) + pxtoheight(12)
-            : pxtoheight(12),
-  },
-  carouselBar: {
-    width: pxtowidth(342),
-    marginLeft: pxtowidth(24),
-    justifyContent: "space-between",
-  },
-  title: {
-    height: pxtoheight(36),
-    marginTop: pxtoheight(16),
-    color: Colors.light.primary_colors.coral_red,
-    fontFamily: "bold",
-    fontSize: pxtowidth(24),
-    lineHeight: pxtoheight(36),
-    textAlign: "center",
-    alignSelf: "center",
-  },
-  subTitle: {
-    height: pxtoheight(24),
-    color: "#B6B4C1",
-    marginTop: pxtoheight(16),
-    textAlign: "center",
-    alignSelf: "center",
-    fontFamily: "regular",
-    fontSize: pxtowidth(16),
-  },
-  input: {
-    color: "#B6B4C1",
-    width: pxtowidth(342),
-    height: pxtoheight(48),
-    alignSelf: "center",
-    paddingTop: pxtoheight(14),
-    paddingBottom: pxtoheight(8),
-    paddingLeft: pxtowidth(48),
     alignItems: "center",
-    flexDirection: "row",
-    fontFamily: "regular",
-    fontSize: pxtowidth(14),
-    borderRadius: 12,
-    backgroundColor: Colors.light.secondary_colors.dark_navy,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "android" ? 25 : 10,
   },
-  forgotPasswordText: {
-    width: pxtowidth(229),
-    height: pxtoheight(18),
-    alignSelf: "center",
-    textAlign: "center",
-    fontFamily: "regular",
-    fontSize: pxtowidth(12),
-    color: Colors.light.primary_colors.sky_blue,
-  },
-  button: {
-    width: "90%",
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: `linear-gradient(90deg, ${Colors.light.primary_colors.coral_red} 5%, #99433A 87.61%)`,
-    boxShadow: "1px 4px 25px 5px rgba(255, 111, 97, 0.25)",
-    paddingVertical: pxtoheight(12),
-    paddingHorizontal: pxtowidth(15),
-    borderRadius: pxtowidth(12),
-    marginTop: pxtoheight(24),
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: pxtowidth(18),
-    fontFamily: "regular",
-  },
-  signUpContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+  backButton: {
     position: "absolute",
-    bottom: 0,
-    paddingVertical: pxtoheight(10),
-    backgroundColor: Colors.light.background,
-    width: "100%",
-    marginTop: pxtoheight(157),
+    top: Platform.OS === "android" ? 35 : 20,
+    left: 20,
+    zIndex: 1,
   },
-  singUpLink: {
-    fontFamily: "semiBold",
-    fontSize: pxtowidth(14),
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#E94560", // Reddish pink
+    marginBottom: 20,
+    marginTop: 20,
   },
-  externalAccountContainer: {
-    flexDirection: "column",
+  subHeader: {
+    fontSize: 16,
+    fontFamily: "regular",
+    fontStyle: "normal",
+    fontWeight: "600",
+    color: "#F2F2F2",
+    marginBottom: 5,
+  },
+  questionText: {
+    fontSize: 14,
+    fontFamily: "regular",
+    fontStyle: "normal",
+    fontWeight: "400",
+    color: "#DADADA", // Light gray
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  carouselContainer: {
+    height: cardHeight + 40, // Height for card + name
+    marginBottom: 20,
+    width: "100%", // Ensure it takes full width for centering FlatList items
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
-    gap: pxtoheight(24),
-    marginTop: pxtoheight(42),
   },
-  logoContainer: {
+  flatList: {
+    flexGrow: 0, // Important for FlatList inside a View with fixed height
+  },
+  flatListContent: {},
+  cardContainer: {
+    width: cardWidth,
+    height: cardHeight, // for image and text
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0F1B2A", // Slightly lighter card background
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: "#263647", // Border color
+    marginRight: 10, // Spacing between cards
+    marginLeft: 30, // Spacing between cards
+    paddingVertical: 10,
+    boxShadow: "0px 0px 41px 0px rgba(79, 195, 247, 0.12)", // Shadow effect
+    elevation: 5, // For Android shadow
+  },
+  exerciseImage: {
+    width: CardImagewidth,
+    height: CardImageheight,
+    borderRadius: 6,
+    marginBottom: 10,
+  },
+  exerciseName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FFF",
+    opacity: 1,
+  },
+  repsSelectionContainer: {
     flexDirection: "row",
+    justifyContent: "space-around",
+    width: "90%",
+    marginBottom: 20,
+  },
+  repButton: {
+    backgroundColor: "#1E395A", // Blueish
+    paddingVertical: 6,
+    paddingHorizontal: 11,
+    borderRadius: 30,
+    minWidth: repButtonWidth,
+    height: repButtonHeight,
+    alignItems: "center",
+    justifyContent: "center",
+    filter: " drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.25))",
+  },
+  selectedRepButton: {
+    backgroundColor: "#E94560", // Reddish pink for selected
+  },
+  repButtonText: {
+    color: "#4FC3F7",
+    fontSize: 12,
+    fontWeight: "600",
+    fontStyle: "normal",
+    fontFamily: "regular",
+  },
+  selectedRepButtonText: {
+    color: "#FFF",
+  },
+  motivationText: {
+    fontSize: 14,
+    color: "#AEAEB2",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    fontStyle: "italic",
+  },
+  footerInfo: {
+    alignItems: "center",
+    marginBottom: 25,
+  },
+  infoText: {
+    fontSize: 14,
+    color: "#ACA7A7",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontFamily: "regular",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  psText: {
+    fontSize: 12,
+    color: "#A5D6A7", // Gold/Yellow for PS background: #A5D6A7;
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  startMovingButton: {
+    marginBottom: 15,
+  },
+  startMovingButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  iWillDoText: {
+    color: "#AEAEB2",
+    fontSize: 14,
+    // textDecorationLine: 'underline',
+  },
+  doLaterText: {
+    color: "#FF6F61", // Reddish pink
+    fontSize: 16,
+    fontWeight: "bold",
+    // textDecorationLine: 'underline',
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: pxtoheight(24),
-    gap: pxtowidth(42),
+  },
+  modalContent: {
+    // This should mimic the card's position and size approximately
+    // Or you can calculate its position based on the FlatList's layout
+    // For simplicity, I'm centering it. You might need to adjust `top` and `left`
+    // using onLayout of the carouselContainer if you want it precisely over the card.
+    width: cardWidth,
+    // height: cardHeight, // Let content define height
+    backgroundColor: "rgba(36, 36, 62, 0.9)", // Semi-transparent card background
+    borderRadius: 15,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#4A4A7A",
+  },
+  modalSwipeText: {
+    color: "#FFF",
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  modalSwipeIcon: {
+    fontSize: 40, // Adjust size for your icon/emoji
+    color: "#FFF",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  modalInstructionText: {
+    color: "#DDD",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  motivatonContainer: {
+    width: "90%",
+    height: "auto",
+    backgroundColor: "#1A2738", // Blueish background for motivation text
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#263647", // Border color
+    // marginBottom: 20,
+    alignItems: "center",
+    // justifyContent: 'center',
   },
 });
+
+export default index;

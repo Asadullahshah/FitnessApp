@@ -61,7 +61,12 @@ const Index = () => {
         <Text style={[styles.singUpLink, { color: Colors.light.primary_colors.light_gray_purple }]}>
           Old Timer?
         </Text>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/(home)")}>
+        {/* <TouchableOpacity onPress={() => router.push("/(tabs)/(home)")}>
+          <Text style={[styles.singUpLink, { color: Colors.light.primary_colors.coral_red }]}>
+            Login
+          </Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity onPress={() => router.navigate("./(EnterTheArena)")}>
           <Text style={[styles.singUpLink, { color: Colors.light.primary_colors.coral_red }]}>
             Login
           </Text>

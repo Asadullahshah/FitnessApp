@@ -290,7 +290,9 @@ const index = () => {
           Join with
         </Text>
         <View style={styles.logoContainer}>
-          <GoogleIconSvg />
+          <Pressable onPress={() => router.navigate('./(EnterTheArena)')} >
+            <GoogleIconSvg />
+          </Pressable>
           <AppleIconSvg />
         </View>
       </View>

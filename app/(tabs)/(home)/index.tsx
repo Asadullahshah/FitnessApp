@@ -46,6 +46,7 @@ const index = () => {
             marginRight: 10,
             gap: 2,
             margin: 10,
+            backgroundColor: 'red'
           }}
         >
           <SunriseSvg width={50} height={30} />
