@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import BelliconSvg from './BellIconSvg';
@@ -7,12 +6,14 @@ type Props = {
   onButton1Press?: () => void;
   onButton2Press?: () => void;
   onButton3Press?: () => void;
+  children ?: React.ReactNode
 };
 
 const ThreeButtonGradient: React.FC<Props> = ({ 
   onButton1Press, 
   onButton2Press, 
-  onButton3Press 
+  onButton3Press,
+  children= null, 
 }) => {
   return (
     <LinearGradient
@@ -35,6 +36,7 @@ const ThreeButtonGradient: React.FC<Props> = ({
         {/* <Text style={styles.text}>Button 3</Text> */}
         <BelliconSvg />
       </TouchableOpacity>
+      {children}
     </LinearGradient>
   );
 };

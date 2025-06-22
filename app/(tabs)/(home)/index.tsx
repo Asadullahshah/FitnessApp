@@ -34,7 +34,7 @@ const index = () => {
           router.push("/(tabs)/(home)/notification");
         }}
         onButton2Press={() => {
-          router.push("/(tabs)/(home)/surprise");
+          router.push("/SurpriseDropScreen");
         }}
         onButton3Press={() => {
           router.push("/(tabs)/(home)/notification");
@@ -45,8 +45,6 @@ const index = () => {
           style={{
             marginRight: 10,
             gap: 2,
-            margin: 10,
-            backgroundColor: 'red'
           }}
         >
           <SunriseSvg width={50} height={30} />

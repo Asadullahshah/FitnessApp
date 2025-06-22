@@ -267,13 +267,13 @@ const index = () => {
       <ButtonRed
         marginT={24}
         onPress={() =>
-          // router.push({
-          //   pathname: "/verify",
-          //   params: {
-          //     method: phoneSelected.toString(),
-          //   },
-          // })
-          handleSignup()
+          router.push({
+            pathname: "/(EnterTheArena)",
+            params: {
+              method: phoneSelected.toString(),
+            },
+          })
+          // handleSignup()
         }
       >
         Join Now
@@ -290,7 +290,7 @@ const index = () => {
           Join with
         </Text>
         <View style={styles.logoContainer}>
-          <Pressable onPress={() => router.navigate('./(EnterTheArena)')} >
+          <Pressable onPress={() => router.navigate('./(Login)')} >
             <GoogleIconSvg />
           </Pressable>
           <AppleIconSvg />

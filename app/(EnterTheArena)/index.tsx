@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { pxToHeight, pxToWidth } from "@/utils";
 import { LinearGradient } from "expo-linear-gradient";
 import { ButtonRed } from "@/components/ui/ButtonRed";
+import { router } from "expo-router";
 // import { Ionicons } from '@expo/vector-icons'; // Example for hand icon
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -90,12 +91,13 @@ const index = () => {
     const repsToLog =
       selectedReps === null ? currentExercise.repsOptions[0] : selectedReps;
     console.log(`Starting move: ${currentExercise.name}, Reps: ${repsToLog}`);
-    // Navigate to workout screen or perform other action
-    alert(
-      `Let's do ${repsToLog} ${
-        currentExercise.isDuration ? "seconds of" : ""
-      } ${currentExercise.name}!`
-    );
+    router.push({
+      pathname: "/ready",
+      params: {
+        exerciseName: currentExercise.name,
+        reps: repsToLog.toString(), // Convert to string for URL safety
+      },
+    });
   };
 
   const handleDoLater = () => {
@@ -139,7 +141,7 @@ const index = () => {
       />
       {/* <Text style={styles.exerciseName}>{item.name}</Text> */}
       <LinearGradient
-        colors={["#4FC3F7", "#FF6F61"]}
+        colors={["rgba(79, 195, 247, 0.2)", "rgba(255, 111, 97, 0.2)"]}
         start={{ x: 0.1, y: 0.2 }}
         end={{ x: 1, y: 0 }}
         style={{
@@ -147,10 +149,12 @@ const index = () => {
           paddingHorizontal: 12,
           borderRadius: 8,
           marginBottom: 35,
-          opacity: 0.2,
+          // opacity: 0.2,
         }}
       >
-        <Text style={styles.exerciseName}>{item.name}</Text>
+        <View style={{ opacity: 1 }}>
+          <Text style={styles.exerciseName}>{item.name}</Text>
+        </View>
       </LinearGradient>
       <View style={styles.repsSelectionContainer}>
         {item.repsOptions.map((reps: any) => (
@@ -240,11 +244,10 @@ const index = () => {
               {/* This View is to prevent the tap from propagating if you only want the card area to be non-tappable to dismiss */}
               <View onStartShouldSetResponder={() => true}>
                 <Text style={styles.modalSwipeText}>SWIPE</Text>
-                <Text style={styles.modalSwipeIcon}>👈 👉</Text>
-                {/* Or use an Icon: <Ionicons name="hand-left-outline" size={50} color="#FFF" /> */}
                 <Text style={styles.modalInstructionText}>
                   to scroll to a different workout
                 </Text>
+                <Image source={require("@/assets/images/swipe.png")} style={styles.modalSwipeIcon} />
               </View>
             </View>
           </TouchableOpacity>
@@ -334,10 +337,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   exerciseName: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 10,
+    fontWeight: "600",
     color: "#FFF",
-    opacity: 1,
+    fontFamily: "regular",
   },
   repsSelectionContainer: {
     flexDirection: "row",
@@ -418,7 +421,7 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.6)",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
   },
   modalContent: {
@@ -427,32 +430,35 @@ const styles = StyleSheet.create({
     // For simplicity, I'm centering it. You might need to adjust `top` and `left`
     // using onLayout of the carouselContainer if you want it precisely over the card.
     width: cardWidth,
-    // height: cardHeight, // Let content define height
-    backgroundColor: "rgba(36, 36, 62, 0.9)", // Semi-transparent card background
+    height: 116, // Let content define height
+    backgroundColor: "#0F1B2A", // Semi-transparent card background
     borderRadius: 15,
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "#4A4A7A",
+    boxShadow: "0px 4px 34px 1px rgba(79, 195, 247, 0.25)", // Shadow effect
+    marginTop: screenHeight / 4, // Adjust to position it in the middle of the screen
   },
   modalSwipeText: {
-    color: "#FFF",
-    fontSize: 28,
-    fontWeight: "bold",
+    color: "#4FC3F7",
+    fontSize: 14,
+    fontWeight: "600",
+    fontFamily: "regular",
     marginBottom: 10,
     textAlign: "center",
   },
   modalSwipeIcon: {
-    fontSize: 40, // Adjust size for your icon/emoji
-    color: "#FFF",
-    textAlign: "center",
-    marginBottom: 10,
+    width: 28,
+    height: 28,
+    alignSelf: "center",
   },
   modalInstructionText: {
     color: "#DDD",
-    fontSize: 16,
+    fontSize: 10,
+    fontWeight: "500",
+    fontFamily: "regular",
     textAlign: "center",
+    marginBottom: 12,
   },
   motivatonContainer: {
     width: "90%",

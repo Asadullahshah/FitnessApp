@@ -1,6 +1,8 @@
+import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView, StyleSheet, Text, Image, View, ImageBackground } from 'react-native'
 
 const workoutVideo = () => {
+  const { exerciseName, reps } = useLocalSearchParams();
   return (
     <View style={styles.container}>
       <ImageBackground

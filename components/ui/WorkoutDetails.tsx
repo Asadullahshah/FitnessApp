@@ -16,7 +16,7 @@ interface WorkoutDetailsProps {
 const difficultyImages = [
   require("@/assets/images/pushup-difficulty-1.png"),
   require("@/assets/images/pushup-difficulty-2.png"),
-  require("@/assets/images/pushup-difficulty-3.png"),
+  require("@/assets/images/pushup-difficulty-3-correct-orient.png"),
 ];
 
 const difficultyText = [
@@ -39,7 +39,7 @@ export const WorkoutDetails: React.FC<WorkoutDetailsProps> = ({
   return (
     <View>
       <Image
-        style={{ width: pxtowidth(390), height: pxtoheight(227) }}
+        style={{ width: pxtowidth(390), height: pxtoheight(227)}}
         source={difficultyImages[difficulty - 1]}
       />
       <View
@@ -78,6 +78,7 @@ export const WorkoutDetails: React.FC<WorkoutDetailsProps> = ({
               height: pxtoheight(68),
               backgroundColor: Colors.light.secondary_colors.dark_navy,
               borderRadius: pxtowidth(18),
+              padding: 10,
               justifyContent: "center",
             }}
           >

@@ -49,6 +49,7 @@ export default function HomeStackLayout() {
         }}
       />
       <Stack.Screen name="surprise" options={{ headerShown: false }} />
+      <Stack.Screen name="SurpriseDropScreen" options={{ headerShown: false }} />
     </Stack>
   );
 }

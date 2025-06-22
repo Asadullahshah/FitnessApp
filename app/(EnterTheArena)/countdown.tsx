@@ -3,7 +3,7 @@ import { setStatusBarHidden } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SubTitleText } from "@/components/ui/SubTitleText";
 import { TitleText } from "@/components/ui/TitleText";
-import { Dimensions, Image, Text, View } from "react-native";
+import { Dimensions, Image, SafeAreaView, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Redirect, router } from "expo-router";
 
@@ -42,7 +42,7 @@ const countdown = () => {
   
 
   return (
-    <View>
+    <SafeAreaView style={{alignItems: "center", justifyContent: 'center'}}>
       <SubTitleText size={18} mTop={118}>
         Are you <TitleText size={18}>Ready?</TitleText>
       </SubTitleText>
@@ -73,7 +73,7 @@ const countdown = () => {
       >
         Turn your <TitleText size={18}>Volume </TitleText> up
       </SubTitleText>
-    </View>
+    </SafeAreaView>
   );
 };
 
