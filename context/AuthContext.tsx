@@ -1,62 +1,68 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { Session } from "@supabase/supabase-js";
 import { router } from "expo-router";
+import { apiService } from "@/lib/api";
+
+interface User {
+  userId: string;
+  username: string;
+  email: string;
+  accessToken: string;
+}
 
 interface AuthContextType {
-  session: Session | null;
-  accessToken: string | null;
+  user: User | null;
+  isLoading: boolean;
+  signOut: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const getSession = async () => {
-  //     const { data } = await supabase.auth.getSession();
-  //     let currentSession = data.session;
+  const checkAuth = async () => {
+    try {
+      const userData = await apiService.getUserData();
+      
+      if (userData.userId && userData.username && userData.email && userData.accessToken) {
+        setUser({
+          userId: userData.userId,
+          username: userData.username,
+          email: userData.email,
+          accessToken: userData.accessToken,
+        });
+      } else {
+        setUser(null);
+        // Redirect to onboarding if no user data
+        router.replace("/(Onboarding)");
+      }
+    } catch (error) {
+      console.error("Auth check error:", error);
+      setUser(null);
+      router.replace("/(Onboarding)");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  //     // If there's no session, try refreshing the token
-  //     if (!currentSession) {
-  //       console.log("Session expired, trying to refresh token...");
-  //       const { data: refreshedSession, error } =
-  //         await supabase.auth.refreshSession();
+  const signOut = async () => {
+    try {
+      await apiService.clearUserData();
+      setUser(null);
+      router.replace("/(Onboarding)");
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
 
-  //       if (refreshedSession?.session) {
-  //         currentSession = refreshedSession.session;
-  //       } else {
-  //         console.log("Token refresh failed:", error);
-  //         router.replace("/(Onboarding)"); // Redirect to login if refresh fails
-  //       }
-  //     }
-
-  //     setSession(currentSession);
-  //     setAccessToken(currentSession?.access_token || null);
-  //   };
-
-  //   getSession();
-
-  //   const { data: authListener } = supabase.auth.onAuthStateChange(
-  //     (_event, newSession) => {
-  //       if (!newSession) {
-  //         console.log("User logged out or session expired.");
-  //         router.replace("/(Login)"); // Redirect to login
-  //       }
-  //       setSession(newSession);
-  //       setAccessToken(newSession?.access_token || null);
-  //     }
-  //   );
-
-  //   return () => {
-  //     authListener.subscription.unsubscribe();
-  //   };
-  // }, []);
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ session, accessToken }}>
+    <AuthContext.Provider value={{ user, isLoading, signOut, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

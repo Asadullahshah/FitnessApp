@@ -113,24 +113,21 @@ const motivation = () => {
               value={option.value} // Assigning unique value
               onPress={() => {
                 setSelected(option.value); // Update selected state
-                router.push("/avatar");
               }}
             />
           ))}
         </RadioButtonGroup>
       </View>
-      <Link href="/(SignUp)" asChild>
-        <Pressable>
-          <LinearGradient
-            colors={["#FF6F61", "#99433A"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Go on..</Text>
-          </LinearGradient>
-        </Pressable>
-      </Link>
+      <Pressable onPress={() => router.push("/(SignUp)")}>
+        <LinearGradient
+          colors={["#FF6F61", "#99433A"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Go on..</Text>
+        </LinearGradient>
+      </Pressable>
       <Text
         style={[
           styles.cursorText,

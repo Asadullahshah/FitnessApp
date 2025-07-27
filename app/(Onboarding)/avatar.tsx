@@ -22,12 +22,14 @@ import GenderSelect from "@/components/GenderSelect";
 import { useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { shake } from "@/constants/Scripts";
+import { apiService } from "@/lib/api";
 
 const avatar = () => {
   const { width, height } = useWindowDimensions();
 
   const [username, setUsername] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
+  const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -38,13 +40,32 @@ const avatar = () => {
   }, [username]);
 
 
-  const handleUserName = () => {
+  const handleUserName = async () => {
     if (!username.trim()) {
       setNameError("Username is required.");
       shake(shakeAnim);
-    } else {
-      setNameError("");
-      router.push("/motivation");
+      return;
+    }
+
+    setIsCheckingUsername(true);
+    setNameError("");
+
+    try {
+      const response = await apiService.checkUsernameAvailability(username.trim());
+      
+      if (response.available) {
+        await AsyncStorage.setItem("username", username.trim());
+        router.push("/motivation");
+      } else {
+        setNameError("Username is already taken. Please choose another one.");
+        shake(shakeAnim);
+      }
+    } catch (error: any) {
+      console.error("Username check error:", error);
+      setNameError("Failed to check username availability. Please try again.");
+      shake(shakeAnim);
+    } finally {
+      setIsCheckingUsername(false);
     }
   };
 
@@ -83,14 +104,16 @@ const avatar = () => {
             </Animated.View>
 
             {/* Button */}
-            <Pressable onPress={handleUserName}>
+            <Pressable onPress={handleUserName} disabled={isCheckingUsername}>
               <LinearGradient
                 colors={["#FF6F61", "#99433A"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={styles.button}
+                style={[styles.button, { opacity: isCheckingUsername ? 0.7 : 1 }]}
               >
-                <Text style={styles.buttonText}>Go on..</Text>
+                <Text style={styles.buttonText}>
+                  {isCheckingUsername ? "Checking..." : "Go on.."}
+                </Text>
               </LinearGradient>
             </Pressable>
           </ScrollView>

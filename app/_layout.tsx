@@ -40,7 +40,7 @@ export default function RootLayout() {
   }
 
   return (
-    //<AuthProvider>
+    <AuthProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(Onboarding)" options={{ headerShown: false }} />
@@ -56,6 +56,6 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
-    //</AuthProvider>
+    </AuthProvider>
   );
 }
