@@ -5,8 +5,10 @@ import { Colors } from "@/constants/Colors";
 import { View } from "react-native";
 import { ButtonBack } from "@/components/ui/ButtonBack";
 import BackIconSvg from "@/components/ui/BackIconSvg";
+import { useState } from "react";
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [state, setState] = useState();
 
   return (
     <Stack
