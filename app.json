@@ -48,14 +48,12 @@
     "experiments": {
       "typedRoutes": true
     },
+    "owner": "asadk002",
     "extra": {
-      "router": {
-        "origin": false
-      },
+      "router": {},
       "eas": {
-        "projectId": "ec62f763-1a38-4ec5-a9f9-af3b57f129cb"
+        "projectId": "a8ec333d-e9b4-41c8-b2b7-c3715567469f"
       }
-    },
-    "owner": "abdulmuqeetmunshi"
+    }
   }
 }

@@ -19,8 +19,10 @@ const Index = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.heading, { padding: width * 0.05, marginTop:
-            Platform.OS == "android" ? (StatusBar.currentHeight || 0) + 12 : 12, }]}>
+      <View style={[styles.heading, {
+        padding: width * 0.05, marginTop:
+          Platform.OS == "android" ? (StatusBar.currentHeight || 0) + 12 : 12,
+      }]}>
         <Text style={[styles.title, { color: Colors.light.primary_colors.coral_red }]}>
           Welcome
         </Text>
@@ -45,9 +47,10 @@ const Index = () => {
       </Text>
 
       <Link href="/avatar" asChild>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.9}>
           <LinearGradient
             colors={["#FF6F61", "#99433A"]}
+            locations={[0.05, 0.88]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={[styles.button, { marginTop: height * 0.04, width: "90%" }]}
@@ -57,11 +60,11 @@ const Index = () => {
         </TouchableOpacity>
       </Link>
 
-      <View style={[styles.loginContainer, { bottom: height * 0.02 }]}>
+      <View style={[styles.loginContainer, { /*bottom: height * 0.02 */}]}>
         <Text style={[styles.singUpLink, { color: Colors.light.primary_colors.light_gray_purple }]}>
           Old Timer?
         </Text>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/(home)")}>
+        <TouchableOpacity onPress={() => router.push("/(Login)")}>
           <Text style={[styles.singUpLink, { color: Colors.light.primary_colors.coral_red }]}>
             Login
           </Text>
@@ -112,6 +115,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderRadius: 12,
+    shadowColor: "#847F7E",
+    shadowOffset: { width: 1, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 25,
+    elevation: 5,
   },
   buttonText: {
     color: "#fff",
@@ -122,7 +130,9 @@ const styles = StyleSheet.create({
   loginContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    position: "absolute",
+    // position: "absolute",
+    marginTop: "auto",
+    marginBottom: "auto",
     width: "100%",
   },
   singUpLink: {

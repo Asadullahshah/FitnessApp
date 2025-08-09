@@ -15,6 +15,7 @@ import {
   StatusBar,
   Animated 
 } from "react-native";
+import SmartwatchBro from "@/assets/images/Smartwatch-bro.svg";
 import { Colors } from "@/constants/Colors";
 import { Link, router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -84,7 +85,8 @@ const avatar = () => {
             </View>
 
             <View style={styles.imageContainer}>
-              <Image source={require("@/assets/images/Smartwatch-bro.png")} style={[styles.svg, { height: height * 0.4 }]} />
+              {/* <Image source={require("@/assets/images/Smartwatch-bro.svg")} style={[styles.svg, { height: height * 0.4 }]} /> */}
+              <SmartwatchBro /*width={width * 0.8} height={height * 0.4}*/ />
             </View>
 
             {/* Avatar Selection */}
@@ -107,6 +109,7 @@ const avatar = () => {
             <Pressable onPress={handleUserName} disabled={isCheckingUsername}>
               <LinearGradient
                 colors={["#FF6F61", "#99433A"]}
+                locations={[0.05, 0.88]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={[styles.button, { opacity: isCheckingUsername ? 0.7 : 1 }]}
@@ -165,7 +168,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderRadius: 12,
-    marginTop: 20,
+    marginTop: 10,
+    shadowColor: "#847F7E",
+    shadowOffset: { width: 1, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 25,
+    elevation: 5,
   },
   buttonText: {
     color: "#fff",
@@ -183,6 +191,6 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     borderRadius: 12,
     paddingVertical: 13,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
