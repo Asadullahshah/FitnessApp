@@ -49,14 +49,18 @@ const index = () => {
 
 
   const handleSignup = async () => {
+    console.log("handleSignup");
     try {
       setLoading(true);
 
       // Get onboarding data from AsyncStorage
       const username = await AsyncStorage.getItem("username");
       const gender = await AsyncStorage.getItem("gender");
-      const motivation = await AsyncStorage.getItem("motivation");
-
+      const motivationStr = await AsyncStorage.getItem("motivation");
+      const motivation = motivationStr != null ? Number(motivationStr) : null;
+      console.log("username", username);
+      console.log("gender", gender);
+      console.log("motivation", motivation);
       // Validate required fields
       if (!username || !gender || !motivation) {
         Alert.alert("Missing Data", "Please complete the onboarding process first.");
@@ -71,22 +75,24 @@ const index = () => {
       }
 
       // Map motivation tone to backend format
-      const motivationToneMap: { [key: string]: string } = {
-        "light": "Light Encouragement",
-        "tough": "Tough Love", 
-        "brutal": "Brutal Honesty"
-      };
+      // const motivationToneMap: string[] = [
+      //    "Light Encouragement",
+      //    "Tough Love", 
+      //    "Brutal Honesty"
+      // ];
 
-      const motivationalToneName = motivationToneMap[motivation] || "Light Encouragement";
+      const motivationalToneID = motivation;
+      console.log("motivationalToneID", motivationalToneID);
 
       // Prepare signup data
       const signupData = {
-        avatar_type: (gender === "Male" ? "male" : "female") as "male" | "female",
+        avatar: (gender === "Male" ? "male" : "female") as "male" | "female",
         email: email,
-        motivational_tone_name: motivationalToneName,
+        motivational_tone_id: motivationalToneID,
         password: emailPassword,
         username: username
       };
+      console.log("signupData", signupData);
 
       // Call the signup API
       const response = await apiService.signup(signupData);
@@ -95,9 +101,9 @@ const index = () => {
       console.log("Verification email should be sent to:", email);
       
       // Store user data locally (without access token yet)
-      await apiService.storeUserData(response.user_id, username, email);
+      await apiService.storeUserData(response.access_token,response.id , response.is_email_verified);
 
-      Alert.alert("Success", response.message);
+      Alert.alert("Success");
       
       // Navigate to verification screen
       router.navigate({

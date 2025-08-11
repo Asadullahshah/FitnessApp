@@ -26,15 +26,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 const motivation = () => {
   const options = [
-    { label: "Light encouragement", value: "light" },
-    { label: "Tough love", value: "tough" },
-    { label: "Brutal Honesty", value: "brutal" },
+    { label: "Light encouragement", value: 0 },
+    { label: "Tough love", value: 1 },
+    { label: "Brutal Honesty", value: 2 },
   ];
 
-  const [selected, setSelected] = React.useState<any>("test");
+  const [selected, setSelected] = React.useState<number>(-1);
   useEffect(() => {
+    console.log("selected", selected);
     if (selected) {
-      AsyncStorage.setItem("motivation", selected);
+      AsyncStorage.setItem("motivation", String(selected));
     }
   }, [selected]);
   
@@ -98,11 +99,12 @@ const motivation = () => {
         <RadioButtonGroup
           containerStyle={{ gap: 12 }}
           selected={selected}
-          onSelected={(value: any) => setSelected(value)}
+          onSelected={(value: number) => setSelected(Number(value))}
           radioBackground={Colors.light.primary_colors.sky_blue}
           radioStyle={{
             width: 16,
             height: 16,
+            borderRadius: 100,
             borderColor: Colors.light.primary_colors.soft_white,
           }}
         >
@@ -112,7 +114,7 @@ const motivation = () => {
               label={<Text style={styles.options}>{option.label}</Text>}
               value={option.value} // Assigning unique value
               onPress={() => {
-                setSelected(option.value); // Update selected state
+                setSelected(Number(option.value)); // Update selected state
               }}
             />
           ))}

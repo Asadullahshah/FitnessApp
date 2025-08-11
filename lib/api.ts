@@ -1,18 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_BASE_URL = "https://forge-nhwj.onrender.com";
+const API_BASE_URL = "https://forge-lnyk.onrender.com";
 
 export interface SignupRequest {
-  avatar_type: "male" | "female";
+  avatar: "male" | "female";
   email: string;
-  motivational_tone_name: string;
+  motivational_tone_id: number;
   password: string;
   username: string;
 }
 
 export interface SignupResponse {
-  user_id: number;
-  message: string;
+  access_token: string;
+  id: string;
+  is_email_verified: boolean;
 }
 
 export interface VerifyEmailRequest {
@@ -32,8 +33,19 @@ export interface VerifyEmailResponse {
 }
 
 export interface UsernameAvailabilityResponse {
-  username: string;
   available: boolean;
+  message: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  access_token: string;
+  id: string;
+  is_email_verified: boolean;
 }
 
 export interface HealthResponse {
@@ -63,6 +75,7 @@ class ApiService {
 
     try {
       const response = await fetch(url, config);
+      console.log("response", response);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -78,7 +91,7 @@ class ApiService {
 
   // Health check
   async checkHealth(): Promise<HealthResponse> {
-    return this.request<HealthResponse>("/health");
+    return this.request<HealthResponse>("/");
   }
 
   // Test API connection
@@ -94,12 +107,15 @@ class ApiService {
 
   // Check username availability
   async checkUsernameAvailability(username: string): Promise<UsernameAvailabilityResponse> {
-    return this.request<UsernameAvailabilityResponse>(`/auth/username-available/${username}`);
+    return this.request<UsernameAvailabilityResponse>(`/auth/username/check`, {
+      method: "POST",
+      body: JSON.stringify({ username }),
+    });
   }
 
   // Signup
   async signup(data: SignupRequest): Promise<SignupResponse> {
-    return this.request<SignupResponse>("/auth/signup", {
+    return this.request<SignupResponse>("/auth/register/email", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -114,13 +130,13 @@ class ApiService {
   }
 
   // Store user data locally
-  async storeUserData(userId: number, username: string, email: string, accessToken?: string): Promise<void> {
-    await AsyncStorage.setItem("userId", userId.toString());
-    await AsyncStorage.setItem("username", username);
-    await AsyncStorage.setItem("email", email);
-    if (accessToken) {
-      await AsyncStorage.setItem("accessToken", accessToken);
-    }
+  async storeUserData(access_token: string, id: string, is_email_verified:boolean): Promise<void> {
+    await AsyncStorage.setItem("access_token", access_token);
+    await AsyncStorage.setItem("id", id);
+    await AsyncStorage.setItem("is_email_verified", is_email_verified.toString());
+    // if (access_token) {
+    //   await AsyncStorage.setItem("accessToken", accessToken);
+    // }
   }
 
   // Get stored user data
@@ -136,6 +152,14 @@ class ApiService {
     const accessToken = await AsyncStorage.getItem("accessToken");
     
     return { userId, username, email, accessToken };
+  }
+
+  // Login
+  async login(data: LoginRequest): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/login/email", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   }
 
   // Clear stored user data

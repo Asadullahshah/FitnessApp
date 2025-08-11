@@ -25,6 +25,7 @@ import { ButtonRed } from "@/components/ui/ButtonRed";
 import { ButtonBlue } from "@/components/ui/ButtonBlue";
 import TextBox from "@/components/TextBox";
 import { supabase } from "@/lib/supabase";
+import { apiService } from "@/lib/api";
 
 const { width, height } = Dimensions.get("window");
 
@@ -40,23 +41,36 @@ const isEmail = (value: string) => /\S+@\S+\.\S+/.test(value);
 
 const SignIn = async () => {
   try {
-    const credentials = isEmail(login)
-      ? { email: login, password }
-      : { phone: login, password };
-
-      console.log("Credentials ===>", credentials);
-    const { data, error } = await supabase.auth.signInWithPassword(credentials);
-
-    if (error) {
-      Alert.alert("Login Error", error.message);
-      console.log("Login Error", error.message);
+    if(isEmail(login)){
+      const loginData = {
+        email: login,
+        password: password
+      }
+      const response = await apiService.login(loginData);
+      console.log("Login response:", response);
+      if(response.is_email_verified){
+        router.push("/(EnterTheArena)");
+      } else {
+        Alert.alert("Email not verified");
+      }
+    } else {
+      Alert.alert("Invalid Email");
       return;
     }
 
-    if (data) {
-      console.log("Data from Login Screen", data);
-      router.push("/(EnterTheArena)");
-    }
+    //   console.log("Credentials ===>", credentials);
+    // const { data, error } = await supabase.auth.signInWithPassword(credentials);
+
+    // if (error) {
+    //   Alert.alert("Login Error", error.message);
+    //   console.log("Login Error", error.message);
+    //   return;
+    // }
+
+    // if (data) {
+    //   console.log("Data from Login Screen", data);
+    //   router.push("/(EnterTheArena)");
+    // }
   } catch (err: any) {
     Alert.alert("Unexpected Error", err.message);
   }

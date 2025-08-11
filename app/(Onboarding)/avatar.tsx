@@ -94,6 +94,7 @@ const avatar = () => {
 
             {/* Input Field */}
             <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
+              {nameError && <Text style={{ color: "red", fontSize: 12, fontFamily: "regular", fontWeight: 400, marginBottom: 10, textAlign: "center" }}>{nameError}</Text>}
             <TextInput
               style={[styles.input, { borderColor: nameError ? "red" : Colors.light.primary_colors.light_gray_purple }]}
               textAlign="center"
