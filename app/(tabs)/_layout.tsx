@@ -49,6 +49,8 @@ export default function TabLayout() {
           paddingHorizontal: 6,
           borderTopStartRadius: 14,
           borderTopEndRadius: 14,
+          position: 'fixed',
+          // overflow: 'hidden',
         },
       }}
     >

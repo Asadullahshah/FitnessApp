@@ -15,14 +15,17 @@ export const Colors = {
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
     inputText: "#B6B4C1",
+    header: '#0F1B2A',
     primary_colors: {
       coral_red: "#FF6F61",
       sky_blue: "#4FC3F7",
       mint_green: "#A5D6A7",
       soft_white: "#F2F2F2",
+      softer_white: "#DADADA",
       light_gray_purple: "#B8B4C1",
       dark_gray: "#182025",
       dark_navy: "#1A202D",
+      
     },
     secondary_colors: {
       deep_black: "#181D25",

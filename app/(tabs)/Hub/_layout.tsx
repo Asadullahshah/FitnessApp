@@ -14,6 +14,7 @@ export default function HubLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="community" options={{ headerShown: false }} />
     </Stack>
   );
 }

@@ -14,7 +14,6 @@ import { Colors } from "@/constants/Colors";
 import { Image } from "react-native";
 import { TouchableOpacity } from "react-native";
 import TrendingConversations from "@/components/ui/TrendingConversations";
-import { sub } from "date-fns";
 import SweatSpaceCard from "@/components/ui/SweatSpaceCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import Animated, {
@@ -23,210 +22,143 @@ import Animated, {
 } from "react-native-reanimated";
 import ScrollIndicator from "@/components/ui/ScrollIndicator";
 import { TitleText } from "@/components/ui/TitleText";
-import { LinearGradient } from "expo-linear-gradient";
 import ChallengeCard from "@/components/ui/ChallengeCard";
+import { hubDummyData } from "@/constants/DummyData";
+import { useRouter } from "expo-router";
 
-const navData = [
-  {
-    name: "Friends",
-    icon: require("@/assets/images/friends.png"),
-  },
-  {
-    name: "Achievements",
-    icon: require("@/assets/images/achivements.png"),
-  },
-  {
-    name: "Leaderboard",
-    icon: require("@/assets/images/leaderboard.png"),
-  },
-  {
-    name: "Guides",
-    icon: require("@/assets/images/guides.png"),
-  },
-];
-
-const sweatSpaceDummyData = [
-  {
-    id: "1",
-    imageSource: require("@/assets/images/whats-new.png"), // replace with valid image path
-    title: "Sweat Space 1",
-    members: "150+ members",
-    icon: <MaterialIcons name="fitness-center" size={10} color="#fff" />,
-    onAddPress: () => console.log("Add Sweat Space 1"),
-  },
-  {
-    id: "2",
-    imageSource: require("@/assets/images/chit-chat.png"),
-    title: "Morning Burn",
-    members: "200+ members",
-    icon: <MaterialIcons name="whatshot" size={10} color="#fff" />,
-    onAddPress: () => console.log("Add Morning Burn"),
-  },
-  {
-    id: "3",
-    imageSource: require("@/assets/images/whats-new.png"),
-    title: "HIIT Club",
-    members: "120+ members",
-    icon: <MaterialIcons name="timer" size={10} color="#fff" />,
-    onAddPress: () => console.log("Add HIIT Club"),
-  },
-];
-
-const dummyData = [
-  {
-    id: 1,
-    title: "Fitness Guru",
-    description:
-      "New feature dropped! Check out the Leaderboard for updates 🏆",
-    likes: 120,
-    comments: 45,
-    date: sub(new Date(), { days: 2 }).toDateString(),
-  },
-  {
-    id: 2,
-    title: "Fitness Guru",
-    description:
-      "New feature dropped! Check out the Leaderboard for updates 🏆",
-    likes: 120,
-    comments: 45,
-    date: sub(new Date(), { days: 2 }).toDateString(),
-  },
-  {
-    id: 3,
-    title: "Best workout routines ",
-    description:
-      "What works for you? New feature dropped! Check out the Leaderboard for updates New feature dropped! Check out the Leaderboard for updates",
-    likes: 200,
-    comments: 60,
-    date: sub(new Date(), { days: 3 }).toDateString(),
-  },
-];
-
-const john = require("@/assets/images/john.png");
-const jane = require("@/assets/images/ana.png");
-const sarah = require("@/assets/images/bella.png");
-
-const sweatSpaceImage = require("@/assets/images/whats-new.png");
 const { width } = Dimensions.get("window");
-export default function index() {
+
+export default function HubScreen() {
   const scrollX = useSharedValue(0);
+  const router = useRouter();
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollX.value = event.contentOffset.x;
     },
   });
+
+  const handleTopNavPress = (item: any) => {
+    console.log(`Navigating to ${item.name}`);
+    // TODO: Add navigation logic here
+  };
+
+  const handleSweatSpacePress = (space: any) => {
+    console.log(`Opening community: ${space.title}`);
+    router.push(`/(tabs)/Hub/community/${space.id}` as any);
+  };
+
+  const handleSweatSpaceAdd = (space: any) => {
+    console.log(`Joining ${space.title}`);
+    // TODO: Add join logic here
+  };
+
+  const handleChallengePress = (challenge: any) => {
+    console.log(`Joining challenge: ${challenge.title}`);
+    // TODO: Add challenge join logic here
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginLeft: 20 }}>
+      {/* Header */}
+      <View style={styles.header}>
         <Text style={styles.title}>The</Text>
         <Text style={styles.title}>
-          <Text
-            style={[
-              styles.title,
-              { color: Colors.light.primary_colors.coral_red },
-            ]}
-          >
-            Sweat
-          </Text>{" "}
-          Society{" "}
+          <Text style={[styles.title, styles.sweatText]}> Sweat </Text>
+          Society
         </Text>
       </View>
-      {/* Friends, Achivements, leaderboard, guides */}
+
+      {/* Top Navigation */}
       <View style={styles.topNav}>
-        {navData.map((item, index) => (
-          // using item.name as router name we can navigate to the respective screen
+        {hubDummyData.topNavItems.map((item) => (
           <TouchableOpacity
-            key={index}
-            style={{ alignItems: "center" }}
-            onPress={() => console.log(item.name)}
+            key={item.id}
+            style={styles.navItem}
+            onPress={() => handleTopNavPress(item)}
           >
             <View style={styles.circle}>
-              <Image source={item.icon} style={{ width: 80, height: 80 }} />
+              <Image source={item.icon} style={styles.navIcon} />
             </View>
-            <Text
-              style={{
-                color: Colors.light.primary_colors.mint_green,
-                fontSize: 10,
-                fontFamily: "regular",
-                fontWeight: 500,
-                alignSelf: "center",
-              }}
-            >
-              {item.name}
-            </Text>
+            <Text style={styles.navText}>{item.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* this is where we start the scrollView */}
+      {/* Main Content */}
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        <View style={styles.trendingConvo}>
-          <Text style={styles.subTitle}>Trending Conversations</Text>
+        {/* Trending Conversations Section */}
+        <View style={styles.trendingSection}>
+          <View style={styles.trendingSectionHeader}>
+            <Text style={styles.sectionTitle}>
+              Trending conversations 🔥
+            </Text>
+          </View>
+          
           <Animated.FlatList
-            data={dummyData}
+            data={hubDummyData.trendingPosts}
             renderItem={({ item }) => <TrendingConversations {...item} />}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             horizontal={true}
-            pagingEnabled
-            showsHorizontalScrollIndicator={true}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
             onScroll={scrollHandler}
             scrollEventThrottle={16}
+            contentContainerStyle={styles.trendingList}
+            snapToInterval={width} // Snap to each post width
+            decelerationRate="fast"
+            bounces={false}
           />
-          <View style={{ alignSelf: "flex-end", paddingHorizontal: 20 }}>
+          
+          <View style={styles.scrollIndicatorContainer}>
             <ScrollIndicator
               scrollX={scrollX}
-              itemCount={dummyData.length}
-              itemWidth={width}
+              itemCount={hubDummyData.trendingPosts.length}
+              itemWidth={width} // Exact width of each trending post card
             />
           </View>
         </View>
-        {/* Sweat Spaces section */}
-        <View style={styles.sweatSpace}>
-          <View style={styles.sweatspaceheader}>
-            <TitleText size={14} color="#fff">
+
+        {/* Sweat Spaces Section */}
+        <View style={styles.sweatSpacesSection}>
+          <View style={styles.sectionHeader}>
+            <TitleText size={16} color="#fff">
               Sweat Spaces
             </TitleText>
-
             <TouchableOpacity>
               <Text style={styles.seeMore}>see more</Text>
             </TouchableOpacity>
           </View>
+          
           <FlatList
-            data={sweatSpaceDummyData}
-            renderItem={({ item }) => {
-              return (
-                <SweatSpaceCard
-                  imageSource={item.imageSource}
-                  title={item.title}
-                  members={item.members}
-                  icon={item.icon}
-                  onAddPress={item.onAddPress}
-                />
-              );
-            }}
+            data={hubDummyData.sweatSpaces}
+            renderItem={({ item }) => (
+              <SweatSpaceCard
+                {...item}
+                onAddPress={() => handleSweatSpaceAdd(item)}
+                onPress={() => handleSweatSpacePress(item)}
+              />
+            )}
             keyExtractor={(item) => item.id}
             horizontal={true}
-            contentContainerStyle={{ marginBottom: 20 }}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.sweatSpacesList}
           />
         </View>
 
-        {/* challeneges */}
-        <View>
-          <Text style={styles.subTitle}>Challenges</Text>
-          {dummyData.map((item) => (
+        {/* Challenges Section */}
+        <View style={styles.challengesSection}>
+          <Text style={styles.sectionTitle}>Join the challenge</Text>
+          
+          {hubDummyData.challenges.map((challenge) => (
             <ChallengeCard
-              key={item.id}
-              imageSource={sweatSpaceImage}
-              title={item.title}
-              members={[jane, john, sarah]}
-              icon="🏆"
+              key={challenge.id}
+              {...challenge}
+              onPress={() => handleChallengePress(challenge)}
             />
           ))}
         </View>
@@ -235,62 +167,110 @@ export default function index() {
   );
 }
 
+// const windowWidth = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
+    backgroundColor: Colors.light.background,
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    marginLeft: 20,
+    marginTop: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    fontFamily: "regular",
+    fontFamily: "Poppins-Bold",
     color: "#fff",
+    lineHeight: 34,
   },
-  subTitle: {
-    fontSize: 14,
-    fontFamily: "regular",
-    fontWeight: 700,
-    color: "#fff",
-    marginStart: 20,
-    marginBottom: 12,
+  sweatText: {
+    color: Colors.light.primary_colors.coral_red,
   },
   topNav: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 20,
-    marginHorizontal: 10,
-    marginBottom: 22,
+    marginTop: 24,
+    marginHorizontal: 20,
+    marginBottom: 32,
+  },
+  navItem: {
+    alignItems: "center",
   },
   circle: {
     width: 80,
     height: 80,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: Colors.light.primary_colors.sky_blue, // Light blue border
+    borderColor: Colors.light.primary_colors.sky_blue,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 12,
-    alignSelf: "center",
+    backgroundColor: Colors.light.secondary_colors.dark_navy,
   },
-  trendingConvo: {
+  navIcon: {
+    width: 48,
+    height: 48,
+    resizeMode: "contain",
+  },
+  navText: {
+    color: Colors.light.primary_colors.mint_green,
+    fontSize: 11,
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    textAlign: "center",
+  },
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  trendingSection: {
     marginBottom: 32,
   },
-  sweatSpace: {
-    width: "100%",
-    marginBottom: 18,
+  trendingSectionHeader: {
+    paddingHorizontal: 20,
+    marginBottom: 16,
+    alignItems: "flex-start",
   },
-  sweatspaceheader: {
+  sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    marginBottom: 18,
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    fontWeight: "700",
+    color: "#fff",
   },
   seeMore: {
     color: "#E0E0E0",
-    fontSize: 10,
-    fontFamily: "regular",
-    fontWeight: 300,
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    fontWeight: "400",
+  },
+  trendingList: {
+    paddingHorizontal: 0,
+  },
+  scrollIndicatorContainer: {
+    width: width - 40,
+    alignSelf: "center",
+    marginTop: 8,
+    marginBottom: 10,
+  },
+  sweatSpacesSection: {
+    marginBottom: 40,
+  },
+  sweatSpacesList: {
+    paddingHorizontal: 20,
+  },
+  challengesSection: {
+    flexDirection: "column",
+    paddingHorizontal: 20,
+    gap: 12,
   },
 });
