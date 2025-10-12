@@ -179,6 +179,16 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* Hide all workout subdirectories from tab bar */}
+      <Tabs.Screen name="workout/[muscleGroup]" options={{ href: null }} />
+      <Tabs.Screen name="workout/plan/[planId]" options={{ href: null }} />
+      <Tabs.Screen name="workout/exercise/[exerciseId]" options={{ href: null }} />
+      <Tabs.Screen name="workout/video/[exerciseId]" options={{ href: null }} />
+      <Tabs.Screen name="workout/ready" options={{ href: null }} />
+      <Tabs.Screen name="workout/arena" options={{ href: null }} />
+      <Tabs.Screen name="workout/programs/[programId]" options={{ href: null }} />
+      <Tabs.Screen name="workout/programs/[programId]/day/[dayId]" options={{ href: null }} />
+      <Tabs.Screen name="workout/mood/[moodId]" options={{ href: null }} />
     </Tabs>
   );
 }

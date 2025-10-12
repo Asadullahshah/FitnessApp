@@ -7,154 +7,168 @@ import {
   SafeAreaView,
   Image,
   Pressable,
-  ScrollView
+  Dimensions,
 } from "react-native";
-import React, { useRef } from "react";
+import React from "react";
 import { Colors } from "@/constants/Colors";
-import { pxToWidth, pxToHeight } from "@/utils";
-import { SubTitleText } from "@/components/ui/SubTitleText";
-import { ButtonRed } from "@/components/ui/ButtonRed";
-import { InfoBox } from "@/components/InfoBox";
-import { Options } from "@/components/Options";
-import { HeartIconSvg } from "@/components/HeartIconSvg";
-import { ArrowRight } from "@/components/ArrowRight";
-import { FavIconSvg } from "@/components/ui/FavIconSvg";
-import { PlansIconSvg } from "@/components/PlansIconSvg";
-import { TrackIconSvg } from "@/components/TrackIconSvg";
-import { AchievementIconSvg } from "@/components/AchievemtIconSvg";
-import { BubbleIcon } from "@/components/BubbleIcon";
-import { ManualIconSvg } from "@/components/ManualIconSvg";
-import { SignOutIconSvg } from "@/components/SignOutIconSvg";
 import { router } from "expo-router";
-import { TitleText } from "@/components/ui/TitleText";
 import { SettingsIconSvg } from "@/components/ui/SettingIconSvg";
 import BackIconSvg from "@/components/ui/BackIconSvg";
+import { LinearGradient } from "expo-linear-gradient";
+import { profileDummyData } from "@/constants/DummyData";
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 const options = [
-  "Favourites",
-  "Premium & Plans",
-  "Track my Progress",
-  "Achievement",
+  "Favorite",
+  "Premium", 
+  "Progress Tracker",
+  "Motivational Tone"
 ];
 
-const optionIcons = [
-  HeartIconSvg,
-  PlansIconSvg,
-  TrackIconSvg,
-  AchievementIconSvg,
-];
-
-const otherIcons = [ManualIconSvg, SignOutIconSvg];
-
-const otherOptions = ["Workout Manual", "Sign Out"];
-
-const bubbles = [
-  require("@/assets/images/shoe.png"),
-  require("@/assets/images/foot.png"),
-  require("@/assets/images/target.png"),
-  require("@/assets/images/candle.png"),
-];
+const otherOptions = ["Workout Manual"];
 
 const profile = () => {
-  const routeRef = useRef<string | null>(null);
+  // Calculate positions for circular layout
+  const getCircularPosition = (index: number, total: number, radius: number) => {
+    const angle = (2 * Math.PI * index) / total - Math.PI / 2; // Start from top
+    const centerX = 152.5; // Center of the 305px circle
+    const centerY = 152.5; // Center of the 305px circle
+    const x = centerX + radius * Math.cos(angle);
+    const y = centerY + radius * Math.sin(angle);
+    return { 
+      x: x - 30, // Half of option item width (60/2)
+      y: y - 35  // Half of option item height including label
+    };
+  };
+
+  const circularOptions = [
+    { label: "Badges", icon: "🎯", route: null },
+    { label: "Premium", icon: "💳", route: null },
+    { label: "Progress\nTracker", icon: "📊", route: null },
+    { label: "Motivational\nTone", icon: "🎤", route: null },
+    { label: "Workout\nManual", icon: "📖", route: null },
+    { label: "Favorite", icon: "❤️", route: "/(tabs)/profile/favorites" },
+  ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          width: "100%",
-          alignSelf: "center",
-          backgroundColor: Colors.light.secondary_colors.dark_navy,
-          paddingHorizontal: 10,
-          paddingVertical: 10,
-        }}
-      >
-        <View style={{width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 10}}>
-          <BackIconSvg onPress={() => router.back()} />
-            <Pressable onPress={() => router.push("/(tabs)/profile/settings")}>
-              <SettingsIconSvg />
-            </Pressable>
+    <View style={styles.container}>
+      {/* Status Bar */}
+      <StatusBar barStyle="light-content" backgroundColor="#0F1B2A" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <BackIconSvg />
+        </Pressable>
+        
+        <Text style={styles.headerTitle}>My Profile</Text>
+        
+        <Pressable onPress={() => router.push("/(tabs)/profile/settings")} style={styles.settingsButton}>
+          <SettingsIconSvg />
+        </Pressable>
+      </View>
+
+      {/* Subtitle */}
+      <Text style={styles.subtitle}>
+        Your dedication leaves footprints,{'\n'}here's the map
+      </Text>
+
+      {/* Stats Card */}
+      <View style={styles.statsCard}>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{profileDummyData.user.stats.height}</Text>
+          <Text style={styles.statLabel}>Height</Text>
         </View>
-        <View style={styles.streakBox}>
-          <Text style={styles.streakText}>20🔥</Text>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{profileDummyData.user.stats.age}</Text>
+          <Text style={styles.statLabel}>Age</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{profileDummyData.user.stats.weight}</Text>
+          <Text style={styles.statLabel}>Weight</Text>
         </View>
       </View>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.contentContainer}>
-        <View style={styles.accountContainer}>
-          <View style={styles.accountDetails}>
+
+      {/* Central Circle Area */}
+      <View style={styles.centralArea}>
+        {/* Main Circle Background */}
+        <View style={styles.mainCircle}>
+          <View style={styles.innerCircle} />
+        </View>
+
+        {/* User Profile in Center */}
+        <View style={styles.userProfile}>
+          <View style={styles.avatarContainer}>
             <Image
-              source={require("@/assets/images/avatar.png")}
+              source={profileDummyData.user.avatar}
               style={styles.avatar}
             />
-            <View>
-              <SubTitleText color={Colors.light.primary_colors.soft_white}>
-                Joseph Crown (Jojo)
-              </SubTitleText>
-              <SubTitleText color="#9E9E9E">joecrown@gmail.com</SubTitleText>
-            </View>
-            <ButtonRed
-              style={styles.button}
-              heightB={30}
-              widthB={80}
-              onPress={() => router.push("/(tabs)/profile/profileEdit")}
-            >
-              Edit
-            </ButtonRed>
           </View>
+          <Text style={styles.userName}>{profileDummyData.user.name}</Text>
+          <Pressable style={styles.uploadButton}>
+            <LinearGradient
+              colors={["#FF6F61", "#99433A"]}
+              style={styles.uploadGradient}
+            >
+              <Text style={styles.uploadText}>📤 Upload</Text>
+            </LinearGradient>
+          </Pressable>
         </View>
-        <View style={styles.infoContainer}>
-          <InfoBox title="185cm">Height</InfoBox>
-          <InfoBox title="24 Y/O">Age</InfoBox>
-          <InfoBox title="70KG">Weight</InfoBox>
-        </View>
-        <View style={styles.optionsContainer}>
-          {options.map((v, i) => (
+
+        {/* Circular Options */}
+        {circularOptions.map((option, index) => {
+          const position = getCircularPosition(index, circularOptions.length, 105);
+          return (
             <Pressable
-              key={i}
+              key={index}
+              style={[
+                styles.optionItem,
+                {
+                  left: position.x,
+                  top: position.y,
+                }
+              ]}
               onPress={() => {
-                console.log(`${v} Pressed`);
+                if (option.route) {
+                  router.push(option.route as any);
+                } else {
+                  console.log(`${option.label} pressed`);
+                }
               }}
             >
-              <Options
-                name={v}
-                IconL={optionIcons[i]}
-                IconR={ArrowRight}
-                key={i}
-              />
+              <View style={styles.optionCircle}>
+                <Text style={styles.optionIcon}>{option.icon}</Text>
+              </View>
+              <Text style={styles.optionLabel}>{option.label}</Text>
             </Pressable>
-          ))}
-        </View>
-        <View style={styles.achievementsContainer}>
-          {bubbles.map((v, i) => (
-            <BubbleIcon img={v} key={i} />
-          ))}
-        </View>
-        <TitleText
-          style={styles.text}
-          color={Colors.light.primary_colors.soft_white}
-          size={18}
-          mTop={20}
-        >
-          Others
-        </TitleText>
-        <View style={[styles.optionsContainer, styles.otherOptionsContainer]}>
-          {otherOptions.map((v, i) => (
-            <Pressable
-              key={i}
-              onPress={() => {
-                console.log(`${v} Pressed`);
-              }}
-            >
-              <Options name={v} IconL={otherIcons[i]} key={i} />
-            </Pressable>
-          ))}
-        </View>
+          );
+        })}
       </View>
-      </ScrollView>
-    </SafeAreaView>
+
+      {/* Friends Section */}
+      <View style={styles.friendsSection}>
+        <View style={styles.friendsCircle}>
+          <Image
+            source={profileDummyData.user.friends.image}
+            style={styles.friendsImage}
+          />
+        </View>
+        <Text style={styles.friendsText}>{profileDummyData.user.friends.count} Friends</Text>
+      </View>
+
+      {/* Sign Out Button */}
+      <Pressable style={styles.signOutButton}>
+        <LinearGradient
+          colors={["#4FC3F7", "#FF6F61"]}
+          style={styles.signOutGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
+          <Text style={styles.signOutIcon}>🚪</Text>
+          <Text style={styles.signOutText}>Sign out</Text>
+        </LinearGradient>
+      </Pressable>
+    </View>
   );
 };
 
@@ -163,78 +177,245 @@ export default profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : null,
-    backgroundColor: Colors.dark.background,
+    backgroundColor: '#0A0E1A',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
-  accountContainer: {
-    // marginTop: pxToHeight(32),
-    width: pxToWidth(350),
-    height: pxToHeight(70),
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: '#0F1B2A',
+    height: 80,
   },
-  accountDetails: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  backButton: {
+    backgroundColor: '#122435',
+    borderRadius: 8,
+    padding: 4,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    fontFamily: 'Poppins',
+    fontWeight: '700',
+    fontSize: 18,
+    color: '#FF6F61',
+    textAlign: 'center',
+  },
+  settingsButton: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  subtitle: {
+    fontFamily: 'Poppins',
+    fontStyle: 'italic',
+    fontWeight: '400',
+    fontSize: 14,
+    lineHeight: 21,
+    textAlign: 'center',
+    letterSpacing: 0.06,
+    color: '#B2B2B2',
+    marginTop: 16,
+    marginHorizontal: 24,
+  },
+  statsCard: {
+    width: 341,
+    height: 65,
+    backgroundColor: '#0F1B2A',
+    opacity: 0.8,
+    borderRadius: 18,
+    alignSelf: 'center',
+    marginTop: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    shadowColor: "#1D1617",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.07,
+    shadowRadius: 40,
+    elevation: 5,
+  },
+  statItem: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  statValue: {
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: 14,
+    color: '#A5D6A7',
+    textAlign: 'center',
+  },
+  statLabel: {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: 10,
+    color: '#B6B4C1',
+    textAlign: 'center',
+  },
+  centralArea: {
+    position: 'relative',
+    width: 305,
+    height: 305,
+    alignSelf: 'center',
+    marginTop: 50,
+    marginHorizontal: 'auto',
+  },
+  mainCircle: {
+    position: 'absolute',
+    width: 305,
+    height: 305,
+    backgroundColor: 'rgba(79, 195, 247, 0.15)',
+    borderRadius: 152.5,
+    shadowColor: 'rgba(79, 195, 247, 0.09)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 67,
+    elevation: 10,
+  },
+  innerCircle: {
+    display: 'none', // Hide the inner circle for cleaner look
+  },
+  userProfile: {
+    position: 'absolute',
+    alignItems: 'center',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -44 }, { translateY: -59 }],
+    width: 88,
+    height: 118,
+  },
+  avatarContainer: {
+    width: 43,
+    height: 43,
+    borderRadius: 21.5,
+    borderWidth: 1,
+    borderColor: '#A5D6A7',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   avatar: {
-    width: pxToWidth(55),
-    height: pxToWidth(55),
-    borderRadius: pxToWidth(55),
-    // marginLeft: pxToWidth(8.5),
+    width: 37,
+    height: 37,
+    borderRadius: 18.5,
   },
-  contentContainer: {
-    padding: 24,
-    height: "100%",
+  userName: {
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: 12,
+    color: '#F2F2F2',
+    marginTop: 12,
+    textAlign: 'center',
   },
-  button: {
-    borderRadius: 999999,
+  uploadButton: {
+    marginTop: 12,
   },
-  infoContainer: {
-    flexDirection: "row",
-    height: pxToHeight(65),
-    width: pxToWidth(341),
-    backgroundColor: Colors.light.secondary_colors.navy_blue,
-    marginTop: pxToHeight(24),
-    borderRadius: pxToWidth(20),
-    alignItems: "center",
-    justifyContent: "space-around",
+  uploadGradient: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 99,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
-  text: {
-    alignSelf: "flex-start",
+  uploadText: {
+    fontFamily: 'Poppins',
+    fontWeight: '500',
+    fontSize: 10,
+    color: '#F2F2F2',
   },
-  optionsContainer: {
-    marginTop: pxToHeight(32),
-    width: pxToWidth(342),
-    flexDirection: "column",
-    gap: pxToHeight(16),
-    padding: 10
+  optionItem: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    gap: 6,
   },
-  otherOptionsContainer: {
-    marginTop: pxToHeight(24),
+  optionCircle: {
+    width: 43,
+    height: 43,
+    backgroundColor: 'rgba(16, 32, 48, 0.9)',
+    borderRadius: 21.5,
+    borderWidth: 1,
+    borderColor: '#4FC3F7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'rgba(141, 141, 141, 0.2)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 24,
+    elevation: 4,
   },
-  achievementsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: pxToWidth(342),
-    height: pxToHeight(71.071),
-    marginTop: pxToHeight(16),
-    gap: pxToWidth(8),
-    alignItems: "center",
-    // justifyContent: "center",
+  optionIcon: {
+    fontSize: 20,
   },
-  streakBox: {
-    backgroundColor: Colors.dark.background,
+  optionLabel: {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: 10,
+    color: '#B6B4C1',
+    textAlign: 'center',
+    lineHeight: 12,
+    marginTop: 2,
+    width: 60,
+  },
+  friendsSection: {
+    alignItems: 'center',
+    marginTop: 40,
+    gap: 12,
+  },
+  friendsCircle: {
+    width: 65,
+    height: 65,
+    borderRadius: 32.5,
+    borderWidth: 1,
+    borderColor: '#4FC3F7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  friendsImage: {
+    width: 28,
+    height: 28,
+    shadowColor: 'rgba(255, 206, 192, 0.3)',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 30,
+    elevation: 5,
+  },
+  friendsText: {
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: 12,
+    color: '#A5D6A7',
+    textAlign: 'center',
+  },
+  signOutButton: {
+    alignSelf: 'center',
+    marginTop: 40,
+    marginBottom: 100,
+  },
+  signOutGradient: {
+    width: 111,
+    height: 42,
     borderRadius: 8,
-    height: pxToHeight(33),
-    width: pxToWidth(74),
-    marginTop: pxToHeight(19),
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    backgroundColor: 'rgba(79, 195, 247, 0.2)',
   },
-  streakText: {
-    fontFamily: "marker",
-    fontSize: pxToHeight(20),
-    color: "white",
+  signOutIcon: {
+    fontSize: 18,
+  },
+  signOutText: {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: 14,
+    color: '#F2F2F2',
   },
 });
